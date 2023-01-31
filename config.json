@@ -1,0 +1,20 @@
+{
+  "commands": [
+    {
+      "name": "List Files in Directory",
+      "command": "ls\n"
+    },
+    {
+      "name": "Current System Information",
+      "command": "uname -a\n"
+    },
+    {
+      "name": "System Uptime",
+      "command": "uptime\n"
+    },
+    {
+      "name": "Disk Usage",
+      "command": "df -h\n"
+    }
+  ]
+}

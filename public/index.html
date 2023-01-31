@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.5/dist/tailwind.min.css"/>
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+</head>
+<body class="bg-gray-200">
+  <div x-data="{ commands: [], fetching: false }" class="px-10 py-20">
+    <div class="flex flex-col items-center">
+      <h1 class="text-4xl font-bold">Bash Command Dashboard</h1>
+      <button x-on:click="fetching = true; fetch('http://localhost:3000/commands')
+        .then(response => response.json())
+        .then(data => { commands = data; fetching = false; })
+        .catch(error => console.error(error))"
+        class="bg-blue-500 text-white px-5 py-2 rounded hover:bg-blue-600">
+        Load Commands
+      </button>
+      <div x-show="fetching" class="mt-10 text-xl">Loading...</div>
+      <div x-show="!fetching" class="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <template x-for="command in commands">
+          <div class="bg-white p-4 shadow-lg">
+            <h2 class="text-lg font-bold">{{ command.name }}</h2>
+            <pre class="text-sm font-mono text-gray-700 mt-2" x-text="command.command"></pre>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
