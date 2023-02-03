@@ -1,20 +1,171 @@
-{
-  "commands": [
-    {
+[
+	{
+      "id": "1",
       "name": "List Files in Directory",
-      "command": "ls\n"
+      "command": "ls\n",
+      "priority": "61",
+      "icon": "https://randomuser.me/api/portraits/men/1.jpg"
     },
     {
+      "id": "2",
       "name": "Current System Information",
-      "command": "uname -a\n"
+      "command": "uname -a\n",
+      "priority": "63",
+      "icon": "https://randomuser.me/api/portraits/men/2.jpg"
     },
     {
+      "id": "3",
       "name": "System Uptime",
-      "command": "uptime\n"
+      "command": "uptime\n",
+      "priority": "66",
+      "icon": "https://randomuser.me/api/portraits/men/3.jpg"
     },
     {
+      "id": "4",
       "name": "Disk Usage",
-      "command": "df -h\n"
+      "command": "df -h\n",
+      "priority": "22",
+      "icon": "https://randomuser.me/api/portraits/men/4.jpg"
+    },
+    {
+      "id": "5",
+      "name": "Sleep 2 seconds",
+      "command": "162700",
+      "priority": "33",
+      "icon": "https://randomuser.me/api/portraits/women/5.jpg"
+    },
+    {
+      "id": "6",
+      "name": "ping google.com",
+      "command": "372000",
+      "priority": "61",
+      "icon": "https://randomuser.me/api/portraits/women/6.jpg"
+    },
+    {
+      "id": "7",
+      "name": "Toggle lights",
+      "command": "137500",
+      "priority": "59",
+      "icon": "https://randomuser.me/api/portraits/men/7.jpg"
+    },
+    {
+      "id": "8",
+      "name": "Minor fail",
+      "command": "327900",
+      "priority": "55",
+      "icon": "https://randomuser.me/api/portraits/women/8.jpg"
+    },
+    {
+      "id": "9",
+      "name": "Colleen Hurst",
+      "command": "205500",
+      "priority": "39",
+      "icon": "https://randomuser.me/api/portraits/women/9.jpg"
+    },
+    {
+      "id": "10",
+      "name": "Sonya Frost",
+      "command": "103600",
+      "priority": "23",
+      "icon": "https://randomuser.me/api/portraits/women/10.jpg"
+    },
+    {
+      "id": "11",
+      "name": "Jena Gaines",
+      "command": "90560",
+      "priority": "30",
+      "icon": "https://randomuser.me/api/portraits/women/11.jpg"
+    },
+    {
+      "id": "12",
+      "name": "Quinn Flynn",
+      "command": "342000",
+      "priority": "22",
+      "icon": "https://randomuser.me/api/portraits/men/12.jpg"
+    },
+    {
+      "id": "13",
+      "name": "Charde Marshall",
+      "command": "470600",
+      "priority": "36",
+      "icon": "https://randomuser.me/api/portraits/women/12.jpg"
+    },
+    {
+      "id": "14",
+      "name": "Haley Kennedy",
+      "command": "313500",
+      "priority": "43",
+      "icon": "https://randomuser.me/api/portraits/women/14.jpg"
+    },
+    {
+      "id": "15",
+      "name": "Tatyana Fitzpatrick",
+      "command": "385750",
+      "priority": "19",
+      "icon": "https://randomuser.me/api/portraits/women/15.jpg"
+    },
+    {
+      "id": "16",
+      "name": "Michael Silva",
+      "command": "198500",
+      "priority": "66",
+      "icon": "https://randomuser.me/api/portraits/men/16.jpg"
+    },
+    {
+      "id": "17",
+      "name": "Paul Byrd",
+      "command": "725000",
+      "priority": "64",
+      "icon": "https://randomuser.me/api/portraits/men/17.jpg"
+    },
+    {
+      "id": "18",
+      "name": "Gloria Little",
+      "command": "237500",
+      "priority": "59",
+      "icon": "https://randomuser.me/api/portraits/women/18.jpg"
+    },
+    {
+      "id": "19",
+      "name": "Bradley Greer",
+      "command": "132000",
+      "priority": "41",
+      "icon": "https://randomuser.me/api/portraits/men/19.jpg"
+    },
+    {
+      "id": "20",
+      "name": "Dai Rios",
+      "command": "217500",
+      "priority": "35",
+      "icon": "https://randomuser.me/api/portraits/men/20.jpg"
+    },
+    {
+      "id": "21",
+      "name": "Jenette Caldwell",
+      "command": "345000",
+      "priority": "30",
+      "icon": "https://randomuser.me/api/portraits/women/21.jpg"
+    },
+    {
+      "id": "22",
+      "name": "Yuri Berry",
+      "command": "675000",
+      "priority": "40",
+      "icon": "https://randomuser.me/api/portraits/men/22.jpg"
+    },
+    {
+      "id": "23",
+      "name": "Caesar Vance",
+      "command": "106450",
+      "priority": "21",
+      "icon": "https://randomuser.me/api/portraits/men/23.jpg"
+    },
+    {
+      "id": "24",
+      "name": "Doris Wilder",
+      "command": "85600",
+      "priority": "23",
+      "icon": "https://randomuser.me/api/portraits/women/24.jpg"
     }
   ]
-}
+

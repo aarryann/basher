@@ -20,7 +20,7 @@ const runCommand = (command, callback) => {
   });
 };
 
-app.get('/commands', (req, res) => {
+app.get('/api/commands', (req, res) => {
   fs.readFile('./config.json', 'utf8', (error, data) => {
     if (error) {
       return res.status(500).json({ error });
