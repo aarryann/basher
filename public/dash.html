@@ -18,7 +18,7 @@
   <body class="bg-grey-100 px-3 font-sans leading-normal tracking-normal">
     <h1 class="text-3xl font-bold text-center">Bash Command Dashboard</h1>
     <div class="container pt-8 mx-auto" x-data="loadCommands()"
-	    x-init="fetch('http://localhost:3000/api/commands')
+	    x-init="fetch('/api/commands')
 				.then(response => response.json())
                 .then(data => myForData = data)">
       <input
@@ -34,12 +34,12 @@
           <div
             class="text-center shadow hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105 p-8"
           >
-			<div class="flex justify-center p-4">
-            <img
-              class="w-10 h-10 rounded-full mr-4"
-              :src="`${item.icon}`"
-            />
-			</div>
+			      <div class="flex justify-center p-4">
+              <img
+                class="w-10 h-10 rounded-full mr-4"
+                :src="`${item.icon}`"
+              />
+			      </div>
             <div x-text="item.name">
             </div>
           </div>
