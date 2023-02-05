@@ -31,7 +31,7 @@ app.get('/api/commands', (req, res) => {
   });
 });
 
-app.get('/run-commands', (req, res) => {
+app.get('/api/commands/:id/run', (req, res) => {
   // Read the config file
   fs.readFile('./config.json', (err, data) => {
     if (err) return res.status(500).send(err.message);
@@ -40,6 +40,13 @@ app.get('/run-commands', (req, res) => {
     let config;
     try {
       config = JSON.parse(data);
+      const id = req.params.id;
+      const record = config.records.find(r => r.id === id);
+      if (!record) {
+        res.status(404).send({ error: 'Record not found' });
+      } else {
+        res.send(record);
+      }
     } catch (err) {
       return res.status(500).send(err.message);
     }
