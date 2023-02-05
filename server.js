@@ -1,5 +1,6 @@
 const express = require('express');
 const child_process = require('child_process');
+const exec = require('child_process').exec;
 const app = express();
 const port = process.env.PORT || 3000;
 const fs = require('fs');
@@ -41,34 +42,22 @@ app.get('/api/commands/:id/run', (req, res) => {
     try {
       config = JSON.parse(data);
       const id = req.params.id;
-      const record = config.records.find(r => r.id === id);
+      const record = config.find(r => r.id === id);
       if (!record) {
         res.status(404).send({ error: 'Record not found' });
       } else {
-        res.send(record);
+        // Get the commands from the config
+        const command = record.command;
+
+        runCommand(command, (err, cmdOutput) => {
+          if (err) return res.status(500).send(err.message);
+          res.send({output: `${cmdOutput}`});
+        });
       }
     } catch (err) {
       return res.status(500).send(err.message);
     }
 
-    // Get the commands from the config
-    const commands = config.commands;
-    if (!commands || !commands.length) return res.status(500).send('No commands found in config');
-
-    let output = '';
-    let index = 0;
-    const next = () => {
-      if (index >= commands.length) return res.send(`Output: ${output}`);
-      
-      const command = commands[index];
-      runCommand(command, (err, cmdOutput) => {
-        if (err) return res.status(500).send(err.message);
-        output += cmdOutput;
-        index++;
-        next();
-      });
-    };
-    next();
   });
 });
 

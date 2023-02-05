@@ -30,21 +30,21 @@
     {
       "id": "5",
       "name": "Sleep 2 seconds",
-      "command": "162700",
+      "command": "sleep 2",
       "priority": "33",
       "icon": "https://randomuser.me/api/portraits/women/5.jpg"
     },
     {
       "id": "6",
       "name": "ping google.com",
-      "command": "372000",
+      "command": "ping google.com",
       "priority": "61",
       "icon": "https://randomuser.me/api/portraits/women/6.jpg"
     },
     {
       "id": "7",
       "name": "Toggle lights",
-      "command": "137500",
+      "command": "echo 'Toggle lights not setup'",
       "priority": "59",
       "icon": "https://randomuser.me/api/portraits/men/7.jpg"
     },

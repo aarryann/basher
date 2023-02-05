@@ -62,7 +62,9 @@
           methods: {
             runCommand(commandId) {
               fetch(`/api/commands/${commandId}/run`)
-              .then(response => console.log(response))
+              //.then(response => console.log(response.json()))
+              .then(response => response.json())
+                .then(data => console.log(data.output))
               .catch(error => console.error(error));
             }
           },
