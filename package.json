@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "wsdev": "nodemon wsserver.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "axios": "^0.21.0",
     "child_process": "^1.0.2",
-	"axios": "^0.21.0"
+    "express": "^4.17.1",
+    "http": "^0.0.1-security",
+    "ws": "^8.12.0"
   },
   "devDependencies": {
     "alpinejs": "^2.x.x",
