@@ -4,12 +4,40 @@ const exec = require('child_process').exec;
 const app = express();
 const port = process.env.PORT || 3000;
 const fs = require('fs');
+const path = require('path');
 
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
+const appRoute = (req, res, next) => {
+  let pagePath = path.join('public', req.path, '.html').replace('/.html', '.html');
+  console.log(path.join('/public', req.path + ".js"));
+  if (fs.existsSync(path.join('/public', req.path + ".js"))) {
+    res.sendFile(__dirname + path.join('/public', req.path + ".js"));
+    //next();
+  }
+  else if (!fs.existsSync(pagePath)) {
+    pagePath = path.join('public', req.path, 'index.html');
+    if (!fs.existsSync(pagePath)) {
+      console.log(`Page not Found: ${pagePath}`);
+      next();
+    }
+  }
+  fs.readFile(pagePath, 'utf-8', (err, html) => {
+    if (err) {
+      console.log(`Error loading template: ${pagePath}`);
+      next();
+    }
+    res.send(html);
+  });
+};
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
+});
+
+app.get('/dash', (req, res) => {
+  res.sendFile(__dirname + '/public/dash.html');
 });
 
 const runCommand = (command, callback) => {
@@ -60,6 +88,8 @@ app.get('/api/commands/:id/run', (req, res) => {
 
   });
 });
+
+app.use(appRoute);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
