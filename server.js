@@ -10,6 +10,11 @@ app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
 const appRoute = (req, res, next) => {
+  console.log(req.path.trim());
+  if (req.path.endsWith('htmlutils')) {
+    next();
+    return;
+  }
   let pagePath = path.join('public', req.path, '.html').replace('/.html', '.html');
   console.log(path.join('/public', req.path + ".js"));
   if (fs.existsSync(path.join('/public', req.path + ".js"))) {
@@ -19,7 +24,7 @@ const appRoute = (req, res, next) => {
   else if (!fs.existsSync(pagePath)) {
     pagePath = path.join('public', req.path, 'index.html');
     if (!fs.existsSync(pagePath)) {
-      console.log(`Page not Found: ${pagePath}`);
+      console.log(`Page not Found1: ${pagePath}`);
       next();
     }
   }
@@ -64,7 +69,7 @@ app.get('/api/commands/:id/run', (req, res) => {
   // Read the config file
   fs.readFile('./config.json', (err, data) => {
     if (err) return res.status(500).send(err.message);
-    
+
     // Parse the JSON data
     let config;
     try {
@@ -79,7 +84,7 @@ app.get('/api/commands/:id/run', (req, res) => {
 
         runCommand(command, (err, cmdOutput) => {
           if (err) return res.status(500).send(err.message);
-          res.send({output: `${cmdOutput}`});
+          res.send({ output: `${cmdOutput}` });
         });
       }
     } catch (err) {
