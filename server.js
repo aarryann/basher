@@ -43,6 +43,10 @@ app.get('/dash', (req, res) => {
   res.sendFile(__dirname + '/public/dash.html');
 });
 
+app.get('/newlook', (req, res) => {
+  res.sendFile(__dirname + '/public/newlook.html');
+});
+
 const runCommand = (command, callback) => {
   exec(command, (err, stdout, stderr) => {
     if (err) return callback(err);

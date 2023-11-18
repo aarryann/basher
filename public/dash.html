@@ -2,50 +2,48 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="w=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Bash Comm</title>
-  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
+
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
   <script type="module" src="components/header.js" defer></script>
 </head>
 
-<body class="bg-grey-200 px-3 font-sans leading-normal tracking-normal">
+<body class="bg-gray-200 px-3 font-sans leading-normal tracking-normal">
   <site-top-nav x-data="{sitename: 'Bash Dash'}"></site-top-nav>
+
   <div class="container pt-4 mx-auto" x-data="loadCommands()" x-init="fetch('/api/commands')
-				.then(response => response.json())
-                .then(data => myForData = data)">
+                    .then(response => response.json())
+                    .then(data => myForData = data)">
+
     <input x-ref="searchField" x-model="search" x-on:keydown.window.prevent.slash="$refs.searchField.focus()"
       placeholder="Search for a command..." type="search"
-      class="block w-full bg-gray-200 focus:outline-none focus:bg-white focus:shadow text-gray-700 font-bold rounded-lg px-4 py-3" />
+      class="block w-full bg-gray-200 focus:outline-none focus:bg-white focus:shadow text-gray-700 font-bold rounded-lg px-4 py-3">
+
     <div class="flex">
       <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <template x-for="item in filteredCommands" :key="item">
           <div
             class="text-center shadow hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105 p-8">
+
             <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               @click="run(item.id)">Run</button>
+
             <div class="flex justify-center p-4">
-              <img class="w-10 h-10 rounded-full mr-4" :src="`${item.icon}`" />
+              <img class="w-10 h-10 rounded-full mr-4" :src="`${item.icon}`">
             </div>
+
             <div x-text="item.name"></div>
           </div>
         </template>
       </div>
-      <div id="viewResult" x-show="result" class="fixed right-0 top-0 h-full w-1/4 bg-white border-l overflow-y-auto">
-        <div class="p-4">
-          <button @click="result = ''" class="absolute top-0 right-0 p-2 cursor-pointer">
-            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-          <h2 class="text-xl font-semibold mb-2">Command Output</h2>
-          <div x-html="result"></div>
-        </div>
-      </div>
+
+      <div class="h-full w-full border mt-4 ml-2 p-2 h-20" x-html="result"></div>
     </div>
+
   </div>
 
   <script>
@@ -58,18 +56,21 @@
           if (this.search === "") {
             return this.myForData;
           }
+
           return this.myForData.filter((item) => {
             return item.name
               .toLowerCase()
               .includes(this.search.toLowerCase());
           });
         },
+
         run: async function run(commandId) {
           let runResult = `Calling ${commandId}<br>`;
           runResult += await this.methods.runCommand(commandId);
           this.result = runResult.replaceAll('\n', '<br>') + '<br>' + this.result;
           console.log(this.result);
         },
+
         methods: {
           async runCommand(commandId) {
             return fetch(`/api/commands/${commandId}/run`)
@@ -79,7 +80,7 @@
               })
               .catch(error => console.error(error));
           }
-        },
+        }
       };
     }
 
