@@ -62,10 +62,8 @@
         methods: {
           async runCommand(commandId) {
             return fetch(`/api/commands/${commandId}/run`)
-              //.then(response => console.log(response.json()))
               .then(response => response.json())
               .then(data => {
-                //console.log(data.output);
                 return data.output;
               })
               .catch(error => console.error(error));

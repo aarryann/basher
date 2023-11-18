@@ -1,47 +1,50 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>WebSocket Client</title>
-  </head>
-  <body>
-    <textarea id="output" readonly style="width: 100%; height: 500px;"></textarea>
-    <br>
-    <input id="command" type="text" style="width: 100%;">
-    <br>
-    <button id="submit">Submit</button>
-    <script>
-      const output = document.getElementById('output');
-      const command = document.getElementById('command');
-      const submit = document.getElementById('submit');
 
-      const ws = new WebSocket('ws://localhost:3000');
+<head>
+  <meta charset="UTF-8">
+  <title>WebSocket Client</title>
+</head>
 
-      ws.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        switch (message.type) {
-          case 'stdout':
-            output.value += `[stdout] ${message.data}\n`;
-            break;
-          case 'stderr':
-            output.value += `[stderr] ${message.data}\n`;
-            break;
-          case 'exit':
-            output.value += `[exit] ${message.code}\n`;
-            break;
-          case 'stdin':
-            const stdin = prompt(message.data);
-            ws.send(JSON.stringify({ type: 'stdin', data: stdin }));
-            break;
-        }
-      };
+<body>
+  <textarea id="output" readonly style="width: 100%; height: 500px;"></textarea>
+  <br>
+  <input id="command" type="text" style="width: 100%;">
+  <br>
+  <button id="submit">Submit</button>
+  <script>
+    const output = document.getElementById('output');
+    const command = document.getElementById('command');
+    const submit = document.getElementById('submit');
 
-      submit.onclick = () => {
-        ws.send(JSON.stringify({
-          cmd: command.value.split(' ')[0],
-          args: command.value.split(' ').slice(1),
-        }));
-      };
-    </script>
-  </body>
+    const ws = new WebSocket('ws://d09j.axlr.net:3000');
+
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      switch (message.type) {
+        case 'stdout':
+          output.value += `[stdout] ${message.data}\n`;
+          break;
+        case 'stderr':
+          output.value += `[stderr] ${message.data}\n`;
+          break;
+        case 'exit':
+          output.value += `[exit] ${message.code}\n`;
+          break;
+        case 'stdin':
+          const stdin = prompt(message.data);
+          ws.send(JSON.stringify({ type: 'stdin', data: stdin }));
+          break;
+      }
+    };
+
+    submit.onclick = () => {
+      ws.send(JSON.stringify({
+        cmd: command.value.split(' ')[0],
+        args: command.value.split(' ').slice(1),
+      }));
+    };
+  </script>
+</body>
+
 </html>

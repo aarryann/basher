@@ -2,7 +2,7 @@
   {
     "id": "25",
     "name": "APT upgrade all servers",
-    "command": "ls\n",
+    "command": "nc -z d02m.axlr.net 22 2>/dev/null && echo 'LIVE'",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
