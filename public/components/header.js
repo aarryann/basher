@@ -20,7 +20,7 @@ if (typeof window !== 'undefined') {
       <div class="absolute inset-x-0 top-full h-px transition bg-zinc-900/7.5 dark:bg-white/7.5"></div>
       <div class="hidden lg:block lg:max-w-md lg:flex-auto">
         <div class="hidden lg:flex">
-          <input type="text" placeholder="Find something..."
+          <input name="sitesearch" type="text" placeholder="Find something..."
             class="hidden h-8 w-full items-center gap-2 rounded-full bg-white pl-5 pr-3 text-sm text-zinc-500 ring-1 ring-zinc-900/10 transition hover:ring-zinc-900/20 ui-not-focus-visible:outline-none dark:bg-white/5 dark:text-zinc-400 dark:ring-inset dark:ring-white/10 dark:hover:ring-white/20 lg:flex">
           <button class="relative inline-block align-middle" style="right: 35px">
             <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" class="inline-block h-5 w-5 stroke-current">
