@@ -8,6 +8,7 @@ if (typeof window !== 'undefined') {
 
   // eslint-disable-next-line
   contentTemplate.innerHTML = html`
+  <link rel="stylesheet" href="/tailwind.min.css" />
   <header class="contents lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex">
   <div
     class="contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pb-8 lg:pt-4 lg:dark:border-white/10 xl:w-80">
@@ -206,11 +207,13 @@ if (typeof window !== 'undefined') {
   class SiteHeader extends HTMLElement {
     constructor() {
       super();
+      this.attachShadow({ mode: 'open' });
     }
 
     async connectedCallback() {
+      const shadowRoot = this.shadowRoot;
       const node = document.importNode(contentTemplate.content, true);
-      this.appendChild(node);
+      shadowRoot.appendChild(node);
     }
   }
 
