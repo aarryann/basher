@@ -19,3 +19,8 @@ Find program based on PID: ps -p 967 -o comm=
 
 ## Commit
 git add . && git commit -m "updates" && git push
+
+## To do
+- Implement bit
+- Implement storybook
+- User Nginx and express
