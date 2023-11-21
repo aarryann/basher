@@ -6,45 +6,12 @@ const port = process.env.PORT || 3000;
 const fs = require('fs');
 const path = require('path');
 
+const staticPath = path.join(__dirname, 'public');
 app.use(express.json());
-app.use(express.static(__dirname + '/public'));
-
-const appRoute = (req, res, next) => {
-  if (req.path.endsWith('htmlutils')) {
-    next();
-    return;
-  }
-  let pagePath = __dirname + path.join('public', req.path, '.html').replace('/.html', '.html');
-  if (fs.existsSync(__dirname + path.join('/public', req.path + ".js"))) {
-    res.sendFile(__dirname + path.join('/public', req.path + ".js"));
-    //next();
-  }
-  else if (!fs.existsSync(pagePath)) {
-    pagePath = __dirname + path.join('public', req.path, 'index.html');
-    if (!fs.existsSync(pagePath)) {
-      console.log(`Page not Found1: ${pagePath}`);
-      next();
-    }
-  }
-  fs.readFile(pagePath, 'utf-8', (err, html) => {
-    if (err) {
-      console.log(`Error loading template: ${pagePath}`);
-      next();
-    }
-    res.send(html);
-  });
-};
+app.use(express.static(staticPath));
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
-});
-
-app.get('/dash', (req, res) => {
-  res.sendFile(__dirname + '/public/dash.html');
-});
-
-app.get('/newlook', (req, res) => {
-  res.sendFile(__dirname + '/public/newlook.html');
+  res.sendFile(__dirname + '/public/pages/index.html');
 });
 
 const runCommand = (command, callback) => {
@@ -99,7 +66,36 @@ app.get('/api/commands/:id/run', (req, res) => {
   });
 });
 
-app.use(appRoute);
+// Use a single route to handle all user-friendly URLs, including nested paths
+app.get('/:path*', (req, res) => {
+  const requestedPath = req.params.path.toLowerCase();
+  const nestedPath = req.params[0] || ''; // Capturing the nested path with *
+  const fullNestedPath = path.join(requestedPath, req.params[0]) || requestedPath; // Capturing the nested path with *
+
+  const pagePath = path.join(staticPath, 'pages/', `${fullNestedPath}.html`);
+  if (fs.existsSync(pagePath)) {
+    // If the requested file exists within 'pages', serve HTML files from the 'pages' folder
+    res.sendFile(pagePath, (err) => {
+      if (err) {
+        // If the file doesn't exist, serve a custom 404 page
+        res.status(404).sendFile(path.join(staticPath, '404.html'));
+      }
+    });
+  } else {
+    // For any other path:
+    // - If it has no extension, consider it a JS file
+    // - If it has an extension, serve files directly
+    const filePath = path.extname(req.path) === '' ? path.join(staticPath, req.path + '.js') : path.join(staticPath, req.path);
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        // If the file doesn't exist, serve a custom 404 page
+        res.status(404).sendFile(path.join(staticPath, '404.html'));
+      }
+    });
+  }
+});
+
+//app.use(appRoute);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

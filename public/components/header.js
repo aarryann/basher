@@ -1,4 +1,4 @@
-import { html } from '../utils/htmlutils.js';
+import { html } from '../utils/htmlutils';
 
 /**
  * Usage: <site-top-nav x-data="{sitename:'...'}></site-top-nav>
