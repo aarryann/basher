@@ -10,11 +10,11 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install 
-RUN npx tailwindcss -i ./main.css -o ./public/tailwind.css
 
 # Copy application code
 COPY . .
 
+RUN npx tailwindcss -i ./main.css -o ./public/tailwind.css
 # Expose port and start application
 EXPOSE 8080
 CMD [ "node", "server.js" ]
