@@ -9,7 +9,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
+      - ./vol:/app/vol
       - node_modules:/app/node_modules
     environment:
       - NODE_ENV=development
