@@ -14,7 +14,7 @@ RUN npm install
 # Copy application code
 COPY . .
 
-RUN npx tailwindcss -i ./main.css -o ./public/tailwind.css
+RUN npx tailwindcss -i ./main.css -o ./public/tailwind.min.css --minify
 # Expose port and start application
 EXPOSE 8080
 CMD [ "node", "server.js" ]
