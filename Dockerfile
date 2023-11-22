@@ -16,5 +16,5 @@ COPY . .
 
 RUN npx tailwindcss -i ./main.css -o ./public/tailwind.min.css --minify
 # Expose port and start application
-EXPOSE 8080
+EXPOSE 3000
 CMD [ "node", "server.js" ]
