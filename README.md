@@ -24,3 +24,19 @@ git add . && git commit -m "updates" && git push
 - Implement bit
 - Implement storybook
 - User Nginx and express
+- Certbot acme lets encrypt
+- SSL in app - not required as SSL termination will be done in Ingress
+- Convert all app to webcomponents
+- Load webcomponents to bit
+- Create nodejs app for wol
+- install casabre in k8
+- alpinex dockerize
+- install alpinex in k8
+- install airflow, kafka, Flink in k8
+- FPDS pipeline into broker
+- broker into flink to godb
+- import sam org into godb
+- daily award feed
+- basic org search in alpinex
+- usaspening like search in alpinex
+- Award history in opp details
