@@ -1,7 +1,7 @@
 version: '3'
 services:
 
-  nodeapp:
+  casabre:
     image: app.casabre:0.1
     build:
       context: .

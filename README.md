@@ -2,8 +2,8 @@
 
 ## Regenerate tailwind
 
-npx tailwindcss -i ./main.css -o ./public/tailwind.css
-or
+npx tailwindcss -i ./main.css -o ./public/tailwind.css \
+or \
 npx tailwindcss -i ./main.css -o ./public/tailwind.min.css --minify
 
 ## Auto start
