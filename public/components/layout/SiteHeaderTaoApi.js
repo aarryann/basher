@@ -1,7 +1,7 @@
-import { html } from '../utils/htmlutils';
+import { html } from '../../utils/htmlutils';
 
 /**
- * Usage: <site-top-nav x-data="{sitename:'...'}></site-top-nav>
+ * Usage: <site-header x-data="{sitename:'...'}></site-header>
  */
 if (typeof window !== 'undefined') {
   const contentTemplate = document.createElement('template');
