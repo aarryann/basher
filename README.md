@@ -27,8 +27,10 @@ Find program based on PID: ps -p 967 -o comm=
   - All menus on left, all content on right, search on top
   - blogs, documentation, lms
 
-## Commit
-git add . && git commit -m "updates" && git push
+## Build actions
+- docker compose stop casabre && docker compose rm casabre
+- docker image rm app.casabre:0.1 && docker compose up -d
+- git add . && git commit -m "updates" && git push
 
 ## To do
 - Convert all app to webcomponents
