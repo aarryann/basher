@@ -2,7 +2,7 @@ version: '3'
 services:
 
   nodeapp:
-    image: my-node-app
+    image: app.casabre:0.1
     build:
       context: .
       dockerfile: Dockerfile
