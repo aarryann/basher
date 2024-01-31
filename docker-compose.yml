@@ -1,13 +1,13 @@
 version: '3'
 services:
 
-  casabre:
-    image: app.casabre:0.1
+  app:
+    image: homation:latest
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3111:3111"
     environment:
       - NODE_ENV=development
 

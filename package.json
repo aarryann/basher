@@ -1,12 +1,17 @@
 {
-  "name": "bash-command-dashboard",
+  "name": "basher",
   "version": "1.0.0",
   "description": "A web dashboard for running and displaying the output of bash commands",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "wsdev": "nodemon wsserver.js"
+    "wsdev": "nodemon wsserver.js",
+    "docker:build": "docker compose up -d",
+    "docker:run": "docker run --rm -d -p 3111:3111 --restart unless-stopped homation:latest ",
+    "docker:clean": "docker compose stop homation && docker compose rm homation",
+    "docker:tag": "docker tag homation:latest aarryann/homation:latest",
+    "docker:push": "docker push aarryann/homation:latest"
   },
   "dependencies": {
     "axios": "^1.6.2",

@@ -28,8 +28,8 @@ Find program based on PID: ps -p 967 -o comm=
   - blogs, documentation, lms
 
 ## Build actions
-- docker compose stop casabre && docker compose rm casabre
-- docker image rm app.casabre:0.1 && docker compose up -d
+- docker compose stop homation && docker compose rm homation
+- docker image rm homation:latest && docker compose up -d
 - git add . && git commit -m "updates" && git push
 
 ## To do
@@ -38,7 +38,7 @@ Find program based on PID: ps -p 967 -o comm=
 - Certbot acme lets encrypt
 - Load webcomponents to bit
 - Create nodejs app for wol
-- install casabre in k8
+- install homation in k8
 - alpinex dockerize
 - install alpinex in k8
 - install airflow, kafka, Flink in k8
