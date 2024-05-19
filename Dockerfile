@@ -1,6 +1,8 @@
 # Start with a Node.js 14 base image
 FROM node:14
 
+RUN apt-get update && apt-get install -y wakeonlan
+
 # Set the working directory
 WORKDIR /app
 
