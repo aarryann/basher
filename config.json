@@ -1,5 +1,26 @@
 [
   {
+    "id": "9",
+    "name": "Turn on all dev",
+    "command": "tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
+    "priority": "39",
+    "icon": "https://randomuser.me/api/portraits/women/9.jpg"
+  },
+  {
+    "id": "10",
+    "name": "Shut off all dev",
+    "command": "tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "priority": "23",
+    "icon": "https://randomuser.me/api/portraits/women/10.jpg"
+  },
+  {
+    "id": "11",
+    "name": "Shut OFF d01m",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "priority": "30",
+    "icon": "https://randomuser.me/api/portraits/women/11.jpg"
+  },
+  {
     "id": "25",
     "name": "APT upgrade all servers",
     "command": "nc -z d02m.axlr.net 22 2>/dev/null && echo 'LIVE'",
@@ -9,119 +30,126 @@
   {
     "id": "26",
     "name": "Turn ON d01m",
-    "command": "wakeonlan b8:ca:3a:9c:bc:ae",
+    "command": "ANSIBLE_EXTRA_VARS='{\"on_tgt\": \"d01m\"}' tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "27",
     "name": "Turn ON d02m",
-    "command": "wakeonlan 90:b1:1c:7d:18:a8",
+    "command": "ANSIBLE_EXTRA_VARS='{\"on_tgt\": \"d02m\"}' tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "28",
     "name": "Turn ON d03m",
-    "command": "wakeonlan b8:ca:3a:9e:9d:04",
+    "command": "ANSIBLE_EXTRA_VARS='{\"on_tgt\": \"d03m\"}' tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "29",
     "name": "Turn ON d04w",
-    "command": "wakeonlan b8:ca:3a:87:b1:c0",
+    "command": "ANSIBLE_EXTRA_VARS='{\"on_tgt\": \"d04w\"}' tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "30",
     "name": "Turn ON d05w",
-    "command": "wakeonlan 90:b1:1c:69:49:14",
+    "command": "ANSIBLE_EXTRA_VARS='{\"on_tgt\": \"d05w\"}' tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "31",
     "name": "Turn ON d06w",
-    "command": "wakeonlan 34:17:eb:a2:e5:89",
+    "command": "ANSIBLE_EXTRA_VARS='{\"on_tgt\": \"d06w\"}' tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "32",
-    "name": "Turn ON d07u",
-    "command": "wakeonlan 98:90:96:9c:c4:30",
+    "name": "Turn ON d07w",
+    "command": "ANSIBLE_EXTRA_VARS='{\"on_tgt\": \"d07w\"}' tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "33",
     "name": "Turn ON d08u",
-    "command": "wakeonlan b8:ca:3a:ab:12:33",
-    "priority": "61",
-    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
-  },
-  {
-    "id": "34",
-    "name": "Turn ON d09j",
-    "command": "wakeonlan 08:00:27:18:5c:83",
+    "command": "ANSIBLE_EXTRA_VARS='{\"on_tgt\": \"d08u\"}' tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "35",
-    "name": "Turn ON t10n",
-    "command": "ls\n",
+    "name": "Turn ON u10f",
+    "command": "ANSIBLE_EXTRA_VARS=\"{'on_tgt': 'u10f\"}' tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "36",
     "name": "Turn OFF d01m",
-    "command": "ls\n",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "37",
     "name": "Turn OFF d02m",
-    "command": "ls\n",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d02m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "38",
     "name": "Turn OFF d03m",
-    "command": "ls\n",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d03m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "39",
     "name": "Turn OFF d04w",
-    "command": "ls\n",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d04w\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "40",
     "name": "Turn OFF d05w",
-    "command": "ls\n",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d05w\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "41",
     "name": "Turn OFF d06w",
-    "command": "ls\n",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d06w\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "42",
-    "name": "Turn OFF d07u",
-    "command": "ls\n",
+    "name": "Turn OFF d07w",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d07w\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "id": "43",
+    "name": "Turn OFF d08u",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d08u\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "id": "44",
+    "name": "Turn OFF u10f",
+    "command": "ANSIBLE_EXTRA_VARS=\"{'off_tgt': 'u10f\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
     "priority": "61",
     "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
@@ -182,25 +210,74 @@
     "icon": "https://randomuser.me/api/portraits/women/8.jpg"
   },
   {
-    "id": "9",
-    "name": "Colleen Hurst",
-    "command": "205500",
-    "priority": "39",
-    "icon": "https://randomuser.me/api/portraits/women/9.jpg"
+    "id": "26",
+    "name": "Wake up d01m",
+    "command": "wakeonlan b8:ca:3a:9c:bc:ae",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
-    "id": "10",
-    "name": "Sonya Frost",
-    "command": "103600",
-    "priority": "23",
-    "icon": "https://randomuser.me/api/portraits/women/10.jpg"
+    "id": "27",
+    "name": "Wake up d02m",
+    "command": "wakeonlan 90:b1:1c:7d:18:a8",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
-    "id": "11",
-    "name": "Jena Gaines",
-    "command": "90560",
-    "priority": "30",
-    "icon": "https://randomuser.me/api/portraits/women/11.jpg"
+    "id": "28",
+    "name": "Wake up d03m",
+    "command": "wakeonlan b8:ca:3a:9e:9d:04",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "id": "29",
+    "name": "Wake up d04w",
+    "command": "wakeonlan b8:ca:3a:87:b1:c0",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "id": "30",
+    "name": "Wake up d05w",
+    "command": "wakeonlan 90:b1:1c:69:49:14",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "id": "31",
+    "name": "Wake up d06w",
+    "command": "wakeonlan 34:17:eb:a2:e5:89",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "id": "32",
+    "name": "Wake up d07u",
+    "command": "wakeonlan 98:90:96:9c:c4:30",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "id": "33",
+    "name": "Wake up d08u",
+    "command": "wakeonlan b8:ca:3a:ab:12:33",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "id": "34",
+    "name": "Wake up d09j",
+    "command": "wakeonlan 08:00:27:18:5c:83",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "id": "35",
+    "name": "Wake up t10n",
+    "command": "ls\n",
+    "priority": "61",
+    "icon": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "12",
