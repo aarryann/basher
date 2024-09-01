@@ -86,6 +86,7 @@ app.get('/:path*', (req, res) => {
     // - If it has no extension, consider it a JS file
     // - If it has an extension, serve files directly
     const filePath = path.extname(req.path) === '' ? path.join(staticPath, req.path + '.js') : path.join(staticPath, req.path);
+    console.log(filePath);
     res.sendFile(filePath, (err) => {
       if (err) {
         // If the file doesn't exist, serve a custom 404 page

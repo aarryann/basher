@@ -1,0 +1,169 @@
+[
+  {
+    "id": "1",
+    "type": "toggle",
+    "command": "tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
+    "command_1": "tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "verification": "nc -z d02m.axlr.net 22 > /dev/null 2>&1 && echo 1 || echo 0",
+    "verification_1": "nc -z d02m.axlr.net 22 > /dev/null 2>&1 && echo 0 || echo 1",
+    "icon": "home",
+    "icon_1": "home",
+    "title": "Turn on all dev",
+    "title_1": "Shutdown all dev",
+    "h": "2",
+    "colspan": 2
+  },
+  {
+    "id": "1",
+    "type": "display",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "clock",
+    "title": "1h 46m",
+    "h": "2",
+    "colspan": 1
+  },
+  {
+    "id": "1",
+    "type": "signal",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "",
+    "title": "",
+    "h": "1",
+    "colspan": 3
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "laptop",
+    "title": "X1-Carbon",
+    "h": "2",
+    "colspan": 1
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "bed",
+    "title": "Evening",
+    "h": "2",
+    "colspan": 1
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "bolt",
+    "title": "5.2h",
+    "h": "2",
+    "colspan": 2
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "clock",
+    "title": "Eat Time",
+    "h": "2",
+    "colspan": 1
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "sun",
+    "title": "Work",
+    "h": "2",
+    "colspan": 3
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "laptop",
+    "title": "Good Times",
+    "h": "2",
+    "colspan": 1
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "bed",
+    "title": "Go",
+    "h": "2",
+    "colspan": 1
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "bolt",
+    "title": "Exercise",
+    "h": "2",
+    "colspan": 2
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "clock",
+    "title": "Shower",
+    "h": "2",
+    "colspan": 1
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "sun",
+    "title": "Watch",
+    "h": "2",
+    "colspan": 3
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "laptop",
+    "title": "Use Mode",
+    "h": "2",
+    "colspan": 1
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "bed",
+    "title": "Meditate",
+    "h": "2",
+    "colspan": 1
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "bolt",
+    "title": "Bright",
+    "h": "2",
+    "colspan": 2
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "home",
+    "title": "Mood",
+    "h": "2",
+    "colspan": 2
+  },
+  {
+    "id": "1",
+    "type": "button",
+    "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
+    "icon": "home",
+    "title": "Wind",
+    "h": "2",
+    "colspan": 2
+  }
+]
