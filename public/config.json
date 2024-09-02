@@ -26,8 +26,8 @@
     "id": "1",
     "type": "signal",
     "command": "ANSIBLE_EXTRA_VARS='{\"off_tgt\": \"d01m\"}' tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
-    "icon": "",
-    "title": "",
+    "icon": "sun",
+    "title": "Signal",
     "h": "1",
     "colspan": 3
   },

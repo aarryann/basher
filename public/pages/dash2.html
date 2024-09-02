@@ -3,11 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-  <!--meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'nonce-a23gbfz9e'"-->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; font-src https://cdnjs.cloudflare.com; style-src 'nonce-a23gbfz9e'; script-src 'nonce-a23gbfz9e'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Homation</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link nonce="a23gbfz9e" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet">
+  <link nonce="a23gbfz9e" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script defer nonce="a23gbfz9e" src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3.x.x/dist/cdn.min.js"></script>
 
 </head>
@@ -20,12 +22,11 @@
       x-model="searchQuery" />
   </div>
 
-  <div class="grid grid-cols-6 sm:grid-cols-12 md:grid-cols-18 lg:grid-cols-24 xl:grid-cols-30 gap-4 p-5 auto-rows-min">
+  <div class="grid grid-cols-3 sm:grid-cols-12 md:grid-cols-18 lg:grid-cols-24 xl:grid-cols-30 gap-4 p-5 auto-rows-min">
     <template x-for="(widget, index) in filteredWidgets" :key="index">
-      <button :class="widget.widgetClass"
-        class="bg-gray-800 rounded-lg p-3 hover:bg-gray-600 transition relative text-left" @mousedown="startHold(index)"
-        @touchstart="startHold(index, true)" @mouseup="endHold(index)" @touchend="endHold(index, true)"
-        @mouseleave="cancelHold" @touchmove="cancelHold">
+      <button :class="widget.widgetClass" :data-index="index"
+        class="bg-gray-800 rounded-lg p-3 hover:bg-gray-600 transition relative text-left" @mousedown="startHold"
+        @touchstart="startHold" @mouseup="endHold" @touchend="endHold" @mouseleave="cancelHold" @touchmove="cancelHold">
         <div class="flex flex-col items-center text-sm">
           <i :class="widget.iconClass"></i>
           <span x-text="widget.title"></span>
@@ -54,7 +55,7 @@
     </button>
   </div>
 
-  <script>
+  <script nonce="a23gbfz9e">
     document.addEventListener('alpine:init', () => {
       Alpine.data('dashboard', () => ({
         modalVisible: false,
@@ -96,11 +97,18 @@
           );
         },
 
-        startHold(index, isTouch = false) {
+        getIndex() {
+          return this.$data.index;
+        },
+
+        startHold(event) {
+          const index = event.currentTarget.getAttribute('data-index');
+          const isTouch = event.type.startsWith('touch');
+
           if (isTouch) {
             this.touchHandled = true;
           } else if (this.touchHandled) {
-            this.touchHandled = false;
+            // This is to avoid multiple clicks (touch and mouse) when mouseclicked in google mobile device mode. Here the mouseclick after touch is ignored
             return;
           }
           this.holdTimer = setTimeout(() => {
@@ -108,19 +116,32 @@
             this.holdTriggered = true;
           }, 1000);
         },
-        endHold(index, isTouch = false) {
+
+        endHold(event) {
+          const index = event.currentTarget.getAttribute('data-index');
+          const isTouch = event.type.startsWith('touch');
+
           if (isTouch) {
-            this.touchHandled = false;
+            // No purpose for this code as no known problems. This is to avoid touchHandled remaning true in touch mode
+            setTimeout(() => { this.touchHandled = false; }, 10);
           }
+          else if (this.touchHandled) {
+            // This is to avoid multiple clicks (touch and mouse) when mouseclicked in google mobile device mode. Here the mouseclick after touch is ignored
+            this.touchHandled = false;
+            return;
+          }
+
           if (!this.holdTriggered) this.handleWidgetClick(index);
           clearTimeout(this.holdTimer);
           this.holdTriggered = false;
         },
+
         cancelHold() {
           clearTimeout(this.holdTimer);
           this.holdTriggered = false;
         },
         handleWidgetClick(index) {
+          //let confirmed = confirm(`Proceed with ${this.widgets[index].title}`);
           console.log('Widget clicked:', this.widgets[index].title);
         },
         showLogs(index) {
@@ -146,6 +167,8 @@
           }
         }
       }));
+
+
     });
   </script>
 </body>
