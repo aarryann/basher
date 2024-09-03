@@ -4,17 +4,35 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; font-src https://cdnjs.cloudflare.com; style-src 'nonce-a23gbfz9e'; script-src 'nonce-a23gbfz9e'">
+    content="default-src 'self'; font-src https://cdnjs.cloudflare.com; style-src 'nonce-a23gbfz9e'; script-src 'nonce-a23gbfz9e' https://cdn.tailwindcss.com">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Homation</title>
   <link nonce="a23gbfz9e" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     rel="stylesheet">
-  <link nonce="a23gbfz9e" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script defer nonce="a23gbfz9e" src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3.x.x/dist/cdn.min.js"></script>
+  <!--link nonce="a23gbfz9e" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"-->
+  <link nonce="a23gbfz9e" href="/styles/tailwind.min.css" rel="stylesheet">
+  <script defer nonce="a23gbfz9e" src="/scripts/alpinejs.csp.cdn.min.js"></script>
 
+  <style nonce="a23gbfz9e">
+    /* Prevent text selection during tap and hold */
+    button {
+      -webkit-touch-callout: none;
+      /* iOS Safari */
+      -webkit-user-select: none;
+      /* Safari */
+      -khtml-user-select: none;
+      /* Konqueror HTML */
+      -moz-user-select: none;
+      /* Firefox */
+      -ms-user-select: none;
+      /* Internet Explorer/Edge */
+      user-select: none;
+      /* Non-prefixed version, currently supported by Chrome and Opera */
+    }
+  </style>
 </head>
 
-<body class="bg-black text-blue-400">
+<body class="bg-black text-cyan-400">
   <!-- Search Bar -->
   <div class="w-full p-4 bg-gray-900 flex justify-center">
     <input type="text" placeholder="Search widgets..."
@@ -25,11 +43,13 @@
   <div class="grid grid-cols-3 sm:grid-cols-12 md:grid-cols-18 lg:grid-cols-24 xl:grid-cols-30 gap-4 p-5 auto-rows-min">
     <template x-for="(widget, index) in filteredWidgets" :key="index">
       <button :class="widget.widgetClass" :data-index="index"
-        class="bg-gray-800 rounded-lg p-3 hover:bg-gray-600 transition relative text-left" @mousedown="startHold"
+        class="flex bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition relative text-left" @mousedown="startHold"
         @touchstart="startHold" @mouseup="endHold" @touchend="endHold" @mouseleave="cancelHold" @touchmove="cancelHold">
-        <div class="flex flex-col items-center text-sm">
-          <i :class="widget.iconClass"></i>
-          <span x-text="widget.title"></span>
+        <div class="grow">
+          <div class="flex flex-col items-center text-md">
+            <i :class="widget.iconClass"></i>
+            <span x-text="widget.title"></span>
+          </div>
         </div>
       </button>
     </template>
