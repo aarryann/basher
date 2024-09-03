@@ -4,14 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; font-src https://cdnjs.cloudflare.com; style-src 'nonce-a23gbfz9e'; script-src 'nonce-a23gbfz9e' https://cdn.tailwindcss.com">
+    content="default-src 'self'; font-src https://cdnjs.cloudflare.com; style-src 'self' 'nonce-a23gbfz9e'; script-src 'self' 'nonce-a23gbfz9e'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Homation</title>
   <link nonce="a23gbfz9e" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     rel="stylesheet">
-  <!--link nonce="a23gbfz9e" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"-->
-  <link nonce="a23gbfz9e" href="/styles/tailwind.min.css" rel="stylesheet">
-  <script defer nonce="a23gbfz9e" src="/scripts/alpinejs.csp.cdn.min.js"></script>
+  <link href="/styles/tailwind.min.css" rel="stylesheet">
+  <script defer src="/scripts/alpinejs.csp.cdn.min.js"></script>
 
   <style nonce="a23gbfz9e">
     /* Prevent text selection during tap and hold */
@@ -29,6 +28,20 @@
       user-select: none;
       /* Non-prefixed version, currently supported by Chrome and Opera */
     }
+
+    @keyframes fade {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .fade-out {
+      animation: fade 0.8s linear forwards;
+    }
   </style>
 </head>
 
@@ -43,12 +56,18 @@
   <div class="grid grid-cols-3 sm:grid-cols-12 md:grid-cols-18 lg:grid-cols-24 xl:grid-cols-30 gap-4 p-5 auto-rows-min">
     <template x-for="(widget, index) in filteredWidgets" :key="index">
       <button :class="widget.widgetClass" :data-index="index"
-        class="flex bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition relative text-left" @mousedown="startHold"
+        class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition relative text-left" @mousedown="startHold"
         @touchstart="startHold" @mouseup="endHold" @touchend="endHold" @mouseleave="cancelHold" @touchmove="cancelHold">
-        <div class="grow">
-          <div class="flex flex-col items-center text-md">
-            <i :class="widget.iconClass"></i>
+        <div class="flex items-center justify-between h-full">
+          <div class="flex items-center justify-end w-6">
+          </div>
+          <div class="flex flex-col items-center text-md grow">
+            <i :class="widget.iconClass" class="mb-1 text-lg"></i>
             <span x-text="widget.title"></span>
+          </div>
+          <div class="flex items-center h-full w-6">
+            <span x-show="widget.countdown" x-text="widget.countdown" :class="getCountdownClass"
+              class="text-5xl font-bold text-white">5</span>
           </div>
         </div>
       </button>
@@ -87,6 +106,7 @@
         holdTimer: null,
         holdTriggered: false,
         touchHandled: false,
+        countdownTimer: null,
 
         async init() {
           try {
@@ -104,6 +124,7 @@
               ? 'col-span-6 expanded'
               : `col-span-${widget.colspan}`;
             widget.iconClass = `fas fa-${widget.icon} mb-2`;
+            widget.countdown = null;
           });
         },
 
@@ -117,8 +138,11 @@
           );
         },
 
-        getIndex() {
-          return this.$data.index;
+        getCountdownClass() {
+          const index = this.$data.index;
+          //const index = this.$event.target.getAttribute('data-index');
+          console.log(`getCountdownClass ${this.widgets[index].countdown}`);
+          return this.widgets[index].countdown >= 0 ? 'fade-out' : '';
         },
 
         startHold(event) {
@@ -160,10 +184,44 @@
           clearTimeout(this.holdTimer);
           this.holdTriggered = false;
         },
+
+        startCountdown(index) {
+          if (this.widgets[index].countdownTimer) {
+            clearTimeout(this.widgets[index].countdownTimer);
+            this.widgets[index].countdownTimer = null;
+            this.widgets[index].countdown = null;
+            console.log('Countdown canceled for:', this.widgets[index].title);
+          } else {
+            this.countdown(index, 5);
+          }
+        },
+
+        countdown(index, count) {
+          if (count <= 0) {
+            this.widgets[index].countdownTimer = null;
+            this.handleOnClick(index);
+            this.widgets[index].countdown = null;
+            return;
+          }
+          this.widgets[index].countdown = count;
+          console.log(`setting count ${this.widgets[index].countdown}`);
+          this.widgets[index].countdownTimer = setTimeout(() => {
+            this.widgets[index].countdown = null; // Reset to hide countdown before next number
+            console.log(`resetting count ${this.widgets[index].countdown}`);
+            setTimeout(() => { this.countdown(index, count - 1) }, 200);
+          }, 800);
+        },
+
         handleWidgetClick(index) {
           //let confirmed = confirm(`Proceed with ${this.widgets[index].title}`);
-          console.log('Widget clicked:', this.widgets[index].title);
+          //console.log('Widget clicked:', this.widgets[index].title);
+          this.startCountdown(index);
         },
+
+        handleOnClick(index) {
+          console.log('On clicked:', this.widgets[index].title);
+        },
+
         showLogs(index) {
           if (this.widgets[index].logs) {
             this.modalContent = this.widgets[index].logs;
