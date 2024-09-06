@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="dashboard">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -10,6 +10,7 @@
   <link nonce="a23gbfz9e" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     rel="stylesheet">
   <link href="/styles/tailwind.min.css" rel="stylesheet">
+  <script type="module" src="/scripts/main.js"></script>
   <script defer src="/scripts/alpinejs.csp.cdn.min.js"></script>
 
   <style nonce="a23gbfz9e">
@@ -45,12 +46,27 @@
   </style>
 </head>
 
-<body class="bg-black text-cyan-400">
-  <!-- Search Bar -->
-  <div class="w-full p-4 bg-gray-900 flex justify-center">
-    <input type="text" placeholder="Search widgets..."
-      class="w-full max-w-2xl p-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-      x-model="searchQuery" />
+
+<body class="bg-black text-cyan-400" x-data="dashboard">
+  <div class="flex items-center justify-between w-full">
+    <div x-show="displayMessage" x-transition:enter="transition transform ease-out duration-500"
+      x-transition:enter-start="-translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
+      x-transition:leave="transition transform ease-in duration-500"
+      x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="-translate-x-full opacity-0"
+      class="w-full p-4 bg-gray-900 h-16"> <span x-text="displayMessage" class="text-sm text-white"></span>
+    </div>
+    <div class="w-full p-4 bg-gray-900 flex h-16 grow-0 justify-center">
+      <input id="search" x-show="isMessageDisplayHidden" x-transition:enter="transition transform ease-out duration-500"
+        x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
+        x-transition:leave="transition transform ease-in duration-500"
+        x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="translate-x-full opacity-0"
+        type="text" placeholder="Search widgets..."
+        class="w-full max-w-2xl p-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        x-model="searchQuery" />
+      <button x-show="displayMessage" @click="hideMessage" class="ml-auto">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
   </div>
 
   <div class="grid grid-cols-3 sm:grid-cols-12 md:grid-cols-18 lg:grid-cols-24 xl:grid-cols-30 gap-4 p-5 auto-rows-min">
@@ -61,13 +77,13 @@
         <div class="flex items-center justify-between h-full">
           <div class="flex items-center justify-end w-6">
           </div>
-          <div class="flex flex-col items-center text-md grow">
-            <i :class="widget.iconClass" class="mb-1 text-lg"></i>
+          <div class="flex flex-col items-center text-sm grow">
+            <i :class="widget.iconClass" class=""></i>
             <span x-text="widget.title"></span>
           </div>
           <div class="flex items-center h-full w-6">
             <span x-show="widget.countdown" x-text="widget.countdown" :class="getCountdownClass"
-              class="text-5xl font-bold text-white">5</span>
+              class="text-4xl font-bold text-white"></span>
           </div>
         </div>
       </button>
@@ -94,161 +110,6 @@
     </button>
   </div>
 
-  <script nonce="a23gbfz9e">
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('dashboard', () => ({
-        modalVisible: false,
-        modalContent: '',
-        theme: 'dark',
-        widgets: [],
-        searchQuery: '',
-        expandedWidget: null,
-        holdTimer: null,
-        holdTriggered: false,
-        touchHandled: false,
-        countdownTimer: null,
-
-        async init() {
-          try {
-            const response = await fetch('config.json');
-            this.widgets = await response.json();
-            this.initializeWidgetClasses();
-          } catch (error) {
-            console.error('Failed to load config.json:', error);
-          }
-        },
-
-        initializeWidgetClasses() {
-          this.widgets.forEach((widget, index) => {
-            widget.widgetClass = this.expandedWidget === index
-              ? 'col-span-6 expanded'
-              : `col-span-${widget.colspan}`;
-            widget.iconClass = `fas fa-${widget.icon} mb-2`;
-            widget.countdown = null;
-          });
-        },
-
-        get filteredWidgets() {
-          if (!this.searchQuery) {
-            return this.widgets;
-          }
-          return this.widgets.filter(widget =>
-            widget.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-            widget.icon.toLowerCase().includes(this.searchQuery.toLowerCase())
-          );
-        },
-
-        getCountdownClass() {
-          const index = this.$data.index;
-          //const index = this.$event.target.getAttribute('data-index');
-          console.log(`getCountdownClass ${this.widgets[index].countdown}`);
-          return this.widgets[index].countdown >= 0 ? 'fade-out' : '';
-        },
-
-        startHold(event) {
-          const index = event.currentTarget.getAttribute('data-index');
-          const isTouch = event.type.startsWith('touch');
-
-          if (isTouch) {
-            this.touchHandled = true;
-          } else if (this.touchHandled) {
-            // This is to avoid multiple clicks (touch and mouse) when mouseclicked in google mobile device mode. Here the mouseclick after touch is ignored
-            return;
-          }
-          this.holdTimer = setTimeout(() => {
-            this.showLogs(index);
-            this.holdTriggered = true;
-          }, 1000);
-        },
-
-        endHold(event) {
-          const index = event.currentTarget.getAttribute('data-index');
-          const isTouch = event.type.startsWith('touch');
-
-          if (isTouch) {
-            // No purpose for this code as no known problems. This is to avoid touchHandled remaning true in touch mode
-            setTimeout(() => { this.touchHandled = false; }, 10);
-          }
-          else if (this.touchHandled) {
-            // This is to avoid multiple clicks (touch and mouse) when mouseclicked in google mobile device mode. Here the mouseclick after touch is ignored
-            this.touchHandled = false;
-            return;
-          }
-
-          if (!this.holdTriggered) this.handleWidgetClick(index);
-          clearTimeout(this.holdTimer);
-          this.holdTriggered = false;
-        },
-
-        cancelHold() {
-          clearTimeout(this.holdTimer);
-          this.holdTriggered = false;
-        },
-
-        startCountdown(index) {
-          if (this.widgets[index].countdownTimer) {
-            clearTimeout(this.widgets[index].countdownTimer);
-            this.widgets[index].countdownTimer = null;
-            this.widgets[index].countdown = null;
-            console.log('Countdown canceled for:', this.widgets[index].title);
-          } else {
-            this.countdown(index, 5);
-          }
-        },
-
-        countdown(index, count) {
-          if (count <= 0) {
-            this.widgets[index].countdownTimer = null;
-            this.handleOnClick(index);
-            this.widgets[index].countdown = null;
-            return;
-          }
-          this.widgets[index].countdown = count;
-          console.log(`setting count ${this.widgets[index].countdown}`);
-          this.widgets[index].countdownTimer = setTimeout(() => {
-            this.widgets[index].countdown = null; // Reset to hide countdown before next number
-            console.log(`resetting count ${this.widgets[index].countdown}`);
-            setTimeout(() => { this.countdown(index, count - 1) }, 200);
-          }, 800);
-        },
-
-        handleWidgetClick(index) {
-          //let confirmed = confirm(`Proceed with ${this.widgets[index].title}`);
-          //console.log('Widget clicked:', this.widgets[index].title);
-          this.startCountdown(index);
-        },
-
-        handleOnClick(index) {
-          console.log('On clicked:', this.widgets[index].title);
-        },
-
-        showLogs(index) {
-          if (this.widgets[index].logs) {
-            this.modalContent = this.widgets[index].logs;
-            this.modalVisible = true;
-          } else {
-            console.log('No logs available for:', this.widgets[index].title);
-          }
-        },
-        closeModal() {
-          this.modalVisible = false;
-        },
-        toggleTheme() {
-          if (this.theme === 'dark') {
-            document.body.classList.remove('bg-black', 'text-blue-400');
-            document.body.classList.add('bg-white', 'text-black');
-            this.theme = 'light';
-          } else {
-            document.body.classList.remove('bg-white', 'text-black');
-            document.body.classList.add('bg-black', 'text-blue-400');
-            this.theme = 'dark';
-          }
-        }
-      }));
-
-
-    });
-  </script>
 </body>
 
 </html>
