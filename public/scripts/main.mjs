@@ -5,30 +5,14 @@ export const dashboard = () => ({
   widgets: [],
   searchQuery: '',
   displayMessage: null,
-  expandedWidget: null,
-  holdTimer: null,
-  holdTriggered: false,
-  touchHandled: false,
-  countdownTimer: null,
 
   async init() {
     try {
       const response = await fetch('config.json');
       this.widgets = await response.json();
-      this.initializeWidgetClasses();
     } catch (error) {
       console.error('Failed to load config.json:', error);
     }
-  },
-
-  initializeWidgetClasses() {
-    this.widgets.forEach((widget, index) => {
-      widget.widgetClass = this.expandedWidget === index
-        ? 'col-span-6 expanded'
-        : `col-span-${widget.colspan}`;
-      widget.iconClass = `fas fa-${widget.icon} mb-1`;
-      widget.countdown = null;
-    });
   },
 
   get filteredWidgets() {
@@ -49,96 +33,6 @@ export const dashboard = () => ({
     return !(this.displayMessage && this.displayMessage.length > 0);
   },
 
-  getCountdownClass() {
-    const index = this.$data.index;
-    //const index = this.$event.target.getAttribute('data-index');
-    return this.widgets[index].countdown >= 0 ? 'fade-out' : '';
-  },
-
-  startHold(event) {
-    this.displayMessage = null;
-    const index = event.currentTarget.getAttribute('data-index');
-    const isTouch = event.type.startsWith('touch');
-
-    if (isTouch) {
-      this.touchHandled = true;
-    } else if (this.touchHandled) {
-      // This is to avoid multiple clicks (touch and mouse) when mouseclicked in google mobile device mode. Here the mouseclick after touch is ignored
-      return;
-    }
-    this.holdTimer = setTimeout(() => {
-      this.showLogs(index);
-      this.holdTriggered = true;
-    }, 1000);
-  },
-
-  endHold(event) {
-    const index = event.currentTarget.getAttribute('data-index');
-    const isTouch = event.type.startsWith('touch');
-
-    if (isTouch) {
-      // No purpose for this code as no known problems. This is to avoid touchHandled remaning true in touch mode
-      setTimeout(() => { this.touchHandled = false; }, 10);
-    }
-    else if (this.touchHandled) {
-      // This is to avoid multiple clicks (touch and mouse) when mouseclicked in google mobile device mode. Here the mouseclick after touch is ignored
-      this.touchHandled = false;
-      return;
-    }
-
-    if (!this.holdTriggered) this.handleWidgetClick(index);
-    clearTimeout(this.holdTimer);
-    this.holdTriggered = false;
-  },
-
-  cancelHold() {
-    clearTimeout(this.holdTimer);
-    this.holdTriggered = false;
-  },
-
-  startCountdown(index) {
-    if (this.widgets[index].countdownTimer) {
-      //this.displayMessage = 'Cancelled Countdown';
-      clearTimeout(this.widgets[index].countdownTimer);
-      this.widgets[index].countdownTimer = null;
-      this.widgets[index].countdown = null;
-    } else {
-      //this.displayMessage = 'Start Countdown';
-      this.countdown(index, 5);
-    }
-  },
-
-  countdown(index, count) {
-    if (count <= 0) {
-      this.widgets[index].countdownTimer = null;
-      this.handleOnClick(index);
-      this.widgets[index].countdown = null;
-      return;
-    }
-    this.widgets[index].countdown = count;
-    this.widgets[index].countdownTimer = setTimeout(() => {
-      this.widgets[index].countdown = null; // Reset to hide countdown before next number
-      setTimeout(() => { this.countdown(index, count - 1) }, 200);
-    }, 800);
-  },
-
-  handleWidgetClick(index) {
-    this.startCountdown(index);
-  },
-
-  handleOnClick(index) {
-    console.log('On clicked:', this.widgets[index].title);
-    this.displayMessage = `${this.widgets[index].title} clicked`;
-  },
-
-  showLogs(index) {
-    if (this.widgets[index].logs) {
-      this.modalContent = this.widgets[index].logs;
-      this.modalVisible = true;
-    } else {
-      console.log('No logs available for:', this.widgets[index].title);
-    }
-  },
   closeModal() {
     this.modalVisible = false;
   },
@@ -188,8 +82,8 @@ export const card = () => ({
   },
 
   startHold(event) {
+    event.preventDefault();
     this.displayMessage = null;
-    //const index = event.currentTarget.getAttribute('data-index');
     const isTouch = event.type.startsWith('touch');
 
     if (isTouch) {
@@ -199,13 +93,13 @@ export const card = () => ({
       return;
     }
     this.holdTimer = setTimeout(() => {
-      this.showLogs(this.index);
+      this.showLogs();
       this.holdTriggered = true;
     }, 1000);
   },
 
   endHold(event) {
-    //const index = event.currentTarget.getAttribute('data-index');
+    event.preventDefault();
     const isTouch = event.type.startsWith('touch');
 
     if (isTouch) {
@@ -218,24 +112,23 @@ export const card = () => ({
       return;
     }
 
-    if (!this.holdTriggered) this.handleWidgetClick(this.index);
+    if (!this.holdTriggered) this.handleWidgetClick();
     clearTimeout(this.holdTimer);
     this.holdTriggered = false;
   },
 
   cancelHold() {
+    event.preventDefault();
     clearTimeout(this.holdTimer);
     this.holdTriggered = false;
   },
 
   startCountdown() {
     if (this.countdownTimer) {
-      //this.displayMessage = 'Cancelled Countdown';
       clearTimeout(this.countdownTimer);
       this.countdownTimer = null;
       this.downCount = null;
     } else {
-      //this.displayMessage = 'Start Countdown';
       this.countdown(5);
     }
   },
@@ -243,7 +136,7 @@ export const card = () => ({
   countdown(count) {
     if (count <= 0) {
       this.countdownTimer = null;
-      this.handleOnClick(index);
+      this.handleOnClick();
       this.downCount = null;
       return;
     }

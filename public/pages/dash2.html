@@ -14,8 +14,7 @@
   <script defer src="/scripts/alpinejs.csp.cdn.min.js"></script>
 
   <style nonce="a23gbfz9e">
-    /* Prevent text selection during tap and hold */
-    .noselect {
+    button {
       -webkit-touch-callout: none;
       /* iOS Safari */
       -webkit-user-select: none;
@@ -30,19 +29,10 @@
       /* Non-prefixed version, currently supported by Chrome and Opera */
     }
 
-    button {
-      -webkit-touch-callout: none;
-      /* iOS Safari */
-      -webkit-user-select: none;
-      /* Safari */
-      -khtml-user-select: none;
-      /* Konqueror HTML */
-      -moz-user-select: none;
-      /* Firefox */
-      -ms-user-select: none;
-      /* Internet Explorer/Edge */
-      user-select: none;
-      /* Non-prefixed version, currently supported by Chrome and Opera */
+    button,
+    [role="button"],
+    .interactive {
+      touch-action: none;
     }
 
     @keyframes fade {
@@ -86,19 +76,19 @@
 
   <div class="grid grid-cols-3 sm:grid-cols-12 md:grid-cols-18 lg:grid-cols-24 xl:grid-cols-30 gap-4 p-5 auto-rows-min">
     <template x-for="(widget, index) in filteredWidgets" :key="index">
-      <button :class="widget.widgetClass" :data-index="index" x-data="card"
+      <button :class="widgetClass" :data-index="index" x-data="card"
         class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition relative text-left" @mousedown="startHold"
         @touchstart="startHold" @mouseup="endHold" @touchend="endHold" @mouseleave="cancelHold" @touchmove="cancelHold">
         <div class="flex items-center justify-between h-full">
           <div class="flex items-center justify-end w-6">
           </div>
           <div class="flex flex-col items-center text-sm grow">
-            <i :class="widget.iconClass" class="noselect"></i>
-            <span x-text="widget.title" class="noselect"></span>
+            <i :class="iconClass"></i>
+            <span x-text="title"></span>
           </div>
           <div class="flex items-center h-full w-6">
-            <span x-show="widget.countdown" x-text="widget.countdown" :class="getCountdownClass"
-              class="text-2xl font-bold text-white noselect"></span>
+            <span x-show="downCount" x-text="downCount" :class="getCountdownClass"
+              class="text-2xl font-bold text-white"></span>
           </div>
         </div>
       </button>
