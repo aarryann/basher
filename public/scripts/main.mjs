@@ -50,7 +50,6 @@ export const dashboard = () => ({
 })
 
 export const card = () => ({
-  expandedWidget: null,
   holdTimer: null,
   holdTriggered: false,
   touchHandled: false,
@@ -71,10 +70,6 @@ export const card = () => ({
     this.widgetClass = `col-span-${widget.colspan}`;
     this.title = widget.title;
     this.icon = widget.icon;
-  },
-
-  isMessageDisplayHidden() {
-    return !(this.displayMessage && this.displayMessage.length > 0);
   },
 
   getCountdownClass() {
