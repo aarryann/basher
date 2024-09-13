@@ -4,14 +4,13 @@
     "type": "toggle",
     "command": "tags=poweron /opt/celt/scripts/manualtasks/run_answers.sh",
     "command_1": "tags=shutdown /opt/celt/scripts/manualtasks/run_answers.sh",
-    "verification": "nc -z d02m.axlr.net 22 > /dev/null 2>&1 && echo 1 || echo 0",
-    "verification_1": "nc -z d02m.axlr.net 22 > /dev/null 2>&1 && echo 0 || echo 1",
+    "feedback": "nc -z d02m.axlr.net 22 > /dev/null 2>&1 && echo 1 || echo 0",
     "icon": "home",
     "icon_1": "home",
     "title": "Turn on all dev",
     "title_1": "Shutdown all dev",
     "h": "2",
-    "colspan": 2
+    "colspan": 1
   },
   {
     "id": "1",

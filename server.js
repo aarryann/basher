@@ -106,6 +106,39 @@ app.get('/api/commands/:id/run', async (req, res) => {
   }
 });
 
+app.get('/api/commands/:id/run/1', async (req, res) => {
+  try {
+    const config = await getConfig();
+    const record = config.find(r => r.id === req.params.id);
+
+    if (!record) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+
+    const output = await runCommand(record.command_1);
+    res.json({ output });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/commands/:id/feedback', async (req, res) => {
+  try {
+    const config = await getConfig();
+    const record = config.find(r => r.id === req.params.id);
+    console.log(record.feedback);
+
+    if (!record) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+
+    const output = await runCommand(record.feedback);
+    res.json({ output });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Catch-all route for other paths
 app.get('*', (req, res) => {
   const requestedPath = req.path.slice(1); // Remove leading slash

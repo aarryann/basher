@@ -8,7 +8,8 @@ export const dashboard = () => ({
 
   async init() {
     try {
-      const response = await fetch('config.json');
+      //const response = await fetch('config.json');
+      const response = await fetch('/api/commands');
       this.widgets = await response.json();
     } catch (error) {
       console.error('Failed to load config.json:', error);
@@ -50,6 +51,7 @@ export const dashboard = () => ({
 })
 
 export const card = () => ({
+  card: null,
   holdTimer: null,
   holdTriggered: false,
   touchHandled: false,
@@ -61,15 +63,77 @@ export const card = () => ({
   icon: "",
   index: null,
   logs: null,
+  toggleStage: 0,
 
   async init() {
-    let widget = this.$data.widget;
+    this.card = this.$data.widget;
     this.index = this.$data.index;
-    this.iconClass = `fas fa-${widget.icon} mb-1`;
     this.downCount = null;
-    this.widgetClass = `col-span-${widget.colspan}`;
-    this.title = widget.title;
-    this.icon = widget.icon;
+    this.widgetClass = `col-span-${this.card.colspan}`;
+    this.iconClass = this.getIconClass(this.card.icon);
+    this.title = this.card.title;
+    this.checkSetTitle();
+    setInterval(() => { this.checkSetTitle() }, 300000);
+  },
+
+  async checkSetTitle() {
+    if (!this.card.feedback || this.card.feedback.length === 0)
+      return;
+    let feedbackStr = await this.getFeedback();
+    let feedback = 0;
+    try {
+      feedback = parseInt(feedbackStr.replace("\n", ""));
+    } catch {
+      feedback = 0;
+    }
+
+    if (feedback != this.toggleStage) {
+      this.toggleStage = feedback;
+      if (feedback === 1) {
+        this.title = this.card.title_1;
+        this.iconClass = this.getIconClass(this.card.icon_1);
+      }
+      else {
+        this.title = this.card.title;
+        this.iconClass = this.getIconClass(this.card.icon);
+      }
+
+    }
+  },
+
+  getIconClass(icon) {
+    return `fas fa-${icon} mb-1`;
+  },
+
+  async getFeedback() {
+    if (!this.card.feedback || this.card.feedback === 0) return;
+
+    return fetch(`/api/commands/${this.card.id}/feedback`)
+      .then(response => response.json())
+      .then(data => {
+        return data.output;
+      })
+      .catch(error => console.error(error));
+  },
+
+  async run() {
+    return fetch(`/api/commands/${this.card.id}/run`)
+      .then(response => response.json())
+      .then(data => {
+        return data.output;
+      })
+      .catch(error => console.error(error));
+  },
+
+  async run_1() {
+    if (!this.card.command_1) return;
+
+    return fetch(`/api/commands/${this.card.id}/run/1`)
+      .then(response => response.json())
+      .then(data => {
+        return data.output;
+      })
+      .catch(error => console.error(error));
   },
 
   getCountdownClass() {
@@ -146,8 +210,16 @@ export const card = () => ({
     this.startCountdown();
   },
 
-  handleOnClick() {
+  async handleOnClick() {
     console.log('On clicked:', this.title);
+    if (this.toggleStage === 1) {
+      //console.log(`2 - ${await this.getFeedback()}`);
+      await this.run_1();
+    } else {
+      await this.run();
+      //console.log(`1 - ${await this.getFeedback()}`);
+    }
+    setTimeout(() => { this.checkSetTitle() }, 30000);
     this.displayMessage = `${this.title} clicked`;
   },
 
