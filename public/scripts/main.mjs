@@ -8,11 +8,12 @@ export const dashboard = () => ({
 
   async init() {
     try {
-      //const response = await fetch('config.json');
       const response = await fetch('/api/commands');
       this.widgets = await response.json();
+      this.applyTheme();
     } catch (error) {
       console.error('Failed to load config.json:', error);
+      this.displayMessage = 'Failed to load widgets. Please try again later.';
     }
   },
 
@@ -37,17 +38,22 @@ export const dashboard = () => ({
   closeModal() {
     this.modalVisible = false;
   },
+
   toggleTheme() {
+    this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    this.applyTheme();
+  },
+
+  applyTheme() {
     if (this.theme === 'dark') {
-      document.body.classList.remove('bg-black', 'text-blue-400');
-      document.body.classList.add('bg-white', 'text-black');
-      this.theme = 'light';
+      document.body.classList.remove('bg-white', 'text-gray-900');
+      document.body.classList.add('bg-gray-900', 'text-white');
     } else {
-      document.body.classList.remove('bg-white', 'text-black');
-      document.body.classList.add('bg-black', 'text-blue-400');
-      this.theme = 'dark';
+      document.body.classList.remove('bg-gray-900', 'text-white');
+      document.body.classList.add('bg-white', 'text-gray-900');
     }
   }
+
 })
 
 export const card = () => ({
@@ -57,47 +63,39 @@ export const card = () => ({
   touchHandled: false,
   countdownTimer: null,
   widgetClass: null,
-  iconClass: null,
+  iconClass: '',
   downCount: null,
-  title: null,
-  icon: "",
-  index: null,
+  title: '',
   logs: null,
-  toggleStage: 0,
+  toggleState: 0,
+  countdownCancelAction: false,
 
   async init() {
     this.card = this.$data.widget;
-    this.index = this.$data.index;
     this.downCount = null;
     this.widgetClass = `col-span-${this.card.colspan}`;
     this.iconClass = this.getIconClass(this.card.icon);
     this.title = this.card.title;
-    this.checkSetTitle();
-    setInterval(() => { this.checkSetTitle() }, 300000);
+    this.updateCardState();
+    setInterval(() => { this.updateCardState() }, 300000);
   },
 
-  async checkSetTitle() {
-    if (!this.card.feedback || this.card.feedback.length === 0)
-      return;
-    let feedbackStr = await this.getFeedback();
-    let feedback = 0;
-    try {
-      feedback = parseInt(feedbackStr.replace("\n", ""));
-    } catch {
-      feedback = 0;
+  async updateCardState() {
+    if (this.card.feedback && this.card.feedback.length > 0) {
+      const feedbackStr = await this.getFeedback();
+      this.toggleState = parseInt(feedbackStr.replace("\n", "")) || 0;
+      this.updateTitleAndIcon();
     }
+  },
 
-    if (feedback != this.toggleStage) {
-      this.toggleStage = feedback;
-      if (feedback === 1) {
-        this.title = this.card.title_1;
-        this.iconClass = this.getIconClass(this.card.icon_1);
-      }
-      else {
-        this.title = this.card.title;
-        this.iconClass = this.getIconClass(this.card.icon);
-      }
-
+  updateTitleAndIcon() {
+    if (this.toggleState === 1) {
+      this.title = this.card.title_1 || this.card.title;
+      this.iconClass = this.getIconClass(this.card.icon_1) || this.getIconClass(this.card.icon);
+    }
+    else {
+      this.title = this.card.title;
+      this.iconClass = this.getIconClass(this.card.icon);
     }
   },
 
@@ -106,16 +104,33 @@ export const card = () => ({
   },
 
   async getFeedback() {
-    if (!this.card.feedback || this.card.feedback === 0) return;
+    if (!this.card.feedback || this.card.feedback.length === 0) return '0';
 
-    return fetch(`/api/commands/${this.card.id}/feedback`)
-      .then(response => response.json())
-      .then(data => {
-        return data.output;
-      })
-      .catch(error => console.error(error));
+    try {
+      const response = await fetch(`/api/commands/${this.card.id}/feedback`);
+      const data = await response.json();
+      return data.output;
+    } catch (error) {
+      console.error('Failed to get feedback:', error);
+      return '0';
+    }
   },
 
+  async runCommand() {
+    try {
+      const endpoint = this.toggleState === 1 ? 'run/1' : 'run';
+      const response = await fetch(`/api/commands/${this.card.id}/${endpoint}`);
+      const data = await response.json();
+      this.$dispatch('show-message', `${this.title} action completed`);
+      setTimeout(() => { this.updateCardState() }, 30000);
+      return data.output;
+    } catch (error) {
+      console.error('Failed to run command:', error);
+      this.$dispatch('show-message', 'Failed to perform action. Please try again.');
+    }
+  },
+
+  /*
   async run() {
     return fetch(`/api/commands/${this.card.id}/run`)
       .then(response => response.json())
@@ -135,6 +150,7 @@ export const card = () => ({
       })
       .catch(error => console.error(error));
   },
+  */
 
   getCountdownClass() {
     return this.downCount >= 0 ? 'fade-out' : '';
@@ -142,17 +158,21 @@ export const card = () => ({
 
   startHold(event) {
     event.preventDefault();
-    this.displayMessage = null;
+    //this.displayMessage = null;
     const isTouch = event.type.startsWith('touch');
+    if (isTouch) this.touchHandled = true;
+    else if (this.touchHandled) return;
+    // The else if is to avoid multiple clicks (touch and mouse) when mouseclicked in google mobile device mode. Here the mouseclick after touch is ignored
 
-    if (isTouch) {
-      this.touchHandled = true;
-    } else if (this.touchHandled) {
-      // This is to avoid multiple clicks (touch and mouse) when mouseclicked in google mobile device mode. Here the mouseclick after touch is ignored
+    // Exit and handle in endHold
+    if (this.countdownTimer) {
+      this.countdownCancelAction = true;
+      this.cancelCountdown();
       return;
     }
+
     this.holdTimer = setTimeout(() => {
-      this.showLogs();
+      this.handleLongClick();
       this.holdTriggered = true;
     }, 1000);
   },
@@ -164,66 +184,67 @@ export const card = () => ({
     if (isTouch) {
       // No purpose for this code as no known problems. This is to avoid touchHandled remaning true in touch mode
       setTimeout(() => { this.touchHandled = false; }, 10);
-    }
-    else if (this.touchHandled) {
+    } else if (this.touchHandled) {
       // This is to avoid multiple clicks (touch and mouse) when mouseclicked in google mobile device mode. Here the mouseclick after touch is ignored
       this.touchHandled = false;
       return;
     }
+    if (this.countdownCancelAction) {
+      this.countdownCancelAction = false;
+      return;
+    }
 
-    if (!this.holdTriggered) this.handleWidgetClick();
-    clearTimeout(this.holdTimer);
-    this.holdTriggered = false;
+    if (!this.holdTriggered) this.handleCardClick();
+    this.clearHoldTimer();
   },
 
   cancelHold() {
-    event.preventDefault();
+    this.clearHoldTimer();
+  },
+
+  clearHoldTimer() {
     clearTimeout(this.holdTimer);
     this.holdTriggered = false;
   },
 
-  startCountdown() {
-    if (this.countdownTimer) {
-      clearTimeout(this.countdownTimer);
-      this.countdownTimer = null;
-      this.downCount = null;
-    } else {
-      this.countdown(5);
-    }
-  },
-
-  countdown(count) {
+  countdownRunCommand(count) {
     if (count <= 0) {
-      this.countdownTimer = null;
-      this.handleOnClick();
-      this.downCount = null;
+      this.cancelCountdown();
+      //this.countdownTimer = null;
+      this.handleRunCommand();
+      //this.downCount = null;
       return;
     }
     this.downCount = count;
     this.countdownTimer = setTimeout(() => {
       this.downCount = null; // Reset to hide countdown before next number
-      setTimeout(() => { this.countdown(count - 1) }, 200);
+      setTimeout(() => { this.countdownRunCommand(count - 1) }, 200);
     }, 800);
   },
 
-  handleWidgetClick() {
-    this.startCountdown();
+  handleCardClick() {
+    this.showLogs();
+
   },
 
-  async handleOnClick() {
-    console.log('On clicked:', this.title);
-    if (this.toggleStage === 1) {
-      //console.log(`2 - ${await this.getFeedback()}`);
-      await this.run_1();
-    } else {
-      await this.run();
-      //console.log(`1 - ${await this.getFeedback()}`);
-    }
-    setTimeout(() => { this.checkSetTitle() }, 30000);
+  handleLongClick() {
+    this.countdownRunCommand(5);
+  },
+
+  async handleRunCommand() {
+    await this.runCommand();
     this.displayMessage = `${this.title} clicked`;
   },
 
+  cancelCountdown() {
+    clearTimeout(this.countdownTimer);
+    this.countdownTimer = null;
+    this.downCount = null;
+
+  },
+
   showLogs() {
+    this.$dispatch('show-modal', `Logs for ${this.title}`);
     if (this.logs) {
       this.modalContent = this.logs;
       this.modalVisible = true;
