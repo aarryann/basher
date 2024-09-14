@@ -3,9 +3,12 @@ export const dashboard = () => ({
   modalContent: '',
   theme: 'dark',
   locked: true,
+  lockClass: null,
   widgets: [],
   searchQuery: '',
   displayMessage: null,
+  messageTimeout: null,
+  lockTimeout: null,
 
   async init() {
     try {
@@ -46,7 +49,14 @@ export const dashboard = () => ({
   },
 
   toggleLock() {
-    this.lock = !this.lock;
+    this.locked = !this.locked;
+    if (this.locked) {
+      clearTimeout(this.lockTimeout);
+      this.lockTimeout = setTimeout(() => {
+        this.locked = false;
+      }, 600000);
+
+    }
   },
 
   applyTheme() {
@@ -59,11 +69,18 @@ export const dashboard = () => ({
     }
   },
 
+  lockClass() {
+    if (this.locked) return `fas fa-lock`;
+    else return `fas fa-lock-open`;
+
+  },
+
   showMessage(message) {
     this.displayMessage = message;
-    setTimeout(() => {
+    clearTimeout(this.messageTimeout);
+    this.messageTimeout = setTimeout(() => {
       this.displayMessage = null;
-    }, 3000);
+    }, 5000);
   }
 })
 
@@ -169,7 +186,7 @@ export const card = () => ({
 
   startHold(event) {
     event.preventDefault();
-    if(this.lock){
+    if (this.locked) {
       this.showMessage(`Screen is locked for edit`);
       return;
     }
@@ -193,7 +210,7 @@ export const card = () => ({
 
   endHold(event) {
     event.preventDefault();
-    if(this.lock){
+    if (this.locked) {
       return;
     }
     const isTouch = event.type.startsWith('touch');
