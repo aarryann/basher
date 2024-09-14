@@ -2,6 +2,7 @@ export const dashboard = () => ({
   modalVisible: false,
   modalContent: '',
   theme: 'dark',
+  locked: true,
   widgets: [],
   searchQuery: '',
   displayMessage: null,
@@ -13,7 +14,7 @@ export const dashboard = () => ({
       this.applyTheme();
     } catch (error) {
       console.error('Failed to load config.json:', error);
-      this.displayMessage = 'Failed to load widgets. Please try again later.';
+      this.showMessage(`Failed to load widgets. Please try again later.`);
     }
   },
 
@@ -44,6 +45,10 @@ export const dashboard = () => ({
     this.applyTheme();
   },
 
+  toggleLock() {
+    this.lock = !this.lock;
+  },
+
   applyTheme() {
     if (this.theme === 'dark') {
       document.body.classList.remove('bg-white', 'text-gray-900');
@@ -52,8 +57,14 @@ export const dashboard = () => ({
       document.body.classList.remove('bg-gray-900', 'text-white');
       document.body.classList.add('bg-white', 'text-gray-900');
     }
-  }
+  },
 
+  showMessage(message) {
+    this.displayMessage = message;
+    setTimeout(() => {
+      this.displayMessage = null;
+    }, 3000);
+  }
 })
 
 export const card = () => ({
@@ -158,7 +169,10 @@ export const card = () => ({
 
   startHold(event) {
     event.preventDefault();
-    //this.displayMessage = null;
+    if(this.lock){
+      this.showMessage(`Screen is locked for edit`);
+      return;
+    }
     const isTouch = event.type.startsWith('touch');
     if (isTouch) this.touchHandled = true;
     else if (this.touchHandled) return;
@@ -179,6 +193,9 @@ export const card = () => ({
 
   endHold(event) {
     event.preventDefault();
+    if(this.lock){
+      return;
+    }
     const isTouch = event.type.startsWith('touch');
 
     if (isTouch) {
@@ -233,7 +250,7 @@ export const card = () => ({
 
   async handleRunCommand() {
     await this.runCommand();
-    this.displayMessage = `${this.title} clicked`;
+    this.showMessage(`${this.title} clicked`);
   },
 
   cancelCountdown() {
