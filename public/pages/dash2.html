@@ -95,6 +95,22 @@
     </template>
   </div>
 
+  <div class="grid grid-cols-2 gap-4 p-5 auto-rows-min">
+    <!-- First Row: Back Button (left-aligned) and Run Button (right-aligned) -->
+    <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start">Back Button</button>
+    <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start">Run Button</button>
+
+    <!-- Second Row: Empty space (to align Alternate Run Button) and Alternate Run Button (right-aligned) -->
+    <div></div>
+    <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start">Alternate Run
+      Button</button>
+
+    <!-- Third Row: Settings Button (left-aligned) and Show Logs Button (right-aligned) -->
+    <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start">Settings Button</button>
+    <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start">Show Logs</button>
+  </div>
+
+
   <!-- Full-Screen Modal for Mobile -->
   <div id="modal" class="overlay" x-show="modalVisible" x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
