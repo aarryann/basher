@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+
+  <title>Bash Commands App</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      background-color: #252526;
+      color: #fff;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin: 0.5rem;
+      width: 150px;
+      box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
+    }
+
+    .card:hover {
+      box-shadow: inset 0 0 0 1px rgb(255 255 255 / 30%);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .card-title {
+      margin-left: 0.5rem;
+    }
+
+    button {
+      background-color: #0068b7;
+      color: #fff;
+      border: none;
+      border-radius: 0.25rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background-color: #0079d3;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+  <header class="bg-indigo-600 p-4 text-white text-center">
+    <h1 class="text-2xl font-bold">Bash Commands</h1>
+  </header>
+
+  <main class="max-w-3xl mx-auto p-4">
+
+    <div class="relative">
+      <input id="search" class="border border-gray-300 rounded p-2 w-full" type="text" placeholder="Search commands...">
+    </div>
+
+    <div id="commands">
+
+      <!-- Cards loaded here -->
+
+    </div>
+
+    <button id="loadMore" class="bg-indigo-600 text-white px-4 py-2 rounded mt-4">Load More</button>
+
+    <div id="output" class="mt-8">
+      <!-- Command output here -->
+    </div>
+
+  </main>
+
+  <script>
+    // Example commands 
+    const commands = [
+      {
+        title: 'List Directories',
+        command: 'ls'
+      },
+      {
+        title: 'List Files',
+        command: 'ls -l'
+      },
+      {
+        title: 'Change Directory',
+        command: 'cd /usr/local/bin'
+      }
+    ];
+
+    // Load initial set of cards  
+    let page = 0;
+    loadCards();
+
+    // Load more cards when clicked
+    document.getElementById('loadMore').addEventListener('click', () => {
+      page++;
+      loadCards();
+    });
+
+    // Card click handler
+    function handleCardClick(command) {
+      document.getElementById('output').innerHTML = '<div class="loader">Loading...</div>';
+
+      // Simulate running command
+      setTimeout(() => {
+        document.getElementById('output').innerHTML = '<pre>' + command + '</pre>';
+      }, 1000);
+    }
+
+    // Generating card HTML
+    function createCard(cmd) {
+      return `
+      <div class="card">
+        <div class="card-header">
+          ${cmd.title}
+        </div>
+        
+        <button onclick="handleCardClick('${cmd.command}')">
+          Run
+        </button>
+      </div>
+    `;
+    }
+
+    // Load cards from commands array
+    function loadCards() {
+      const numCards = 3;
+      const start = page * numCards;
+      const end = start + numCards;
+
+      let html = '';
+
+      for (let i = start; i < end && i < commands.length; i++) {
+        const cmd = commands[i];
+
+        html += `
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">${cmd.title}</h3>
+        </div>
+        <button onclick="handleCardClick('${cmd.command}')">Run</button>
+      </div>
+    `;
+      }
+
+      document.getElementById('commands').innerHTML += html;
+    }
+  </script>
+
+</body>
+
+</html>

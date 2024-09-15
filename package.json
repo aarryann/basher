@@ -11,10 +11,14 @@
     "docker:run": "docker run --rm -d -p 3111:3111 --restart unless-stopped homation:latest ",
     "docker:clean": "docker compose stop homation && docker compose rm homation",
     "docker:tag": "docker tag homation:latest aarryann/homation:latest",
-    "docker:push": "docker push aarryann/homation:latest"
+    "docker:push": "docker push aarryann/homation:latest",
+    "build": "astro build",
+    "buildw": "astro build --watch"
+
   },
   "dependencies": {
     "@alpinejs/csp": "^3.14.1",
+    "astro": "^4.15.6",
     "axios": "^1.7.7",
     "child_process": "^1.0.2",
     "express": "^4.19.2",

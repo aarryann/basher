@@ -39,16 +39,12 @@ app.use(express.static(staticPath));
 
 // Helper function to replace nonce in HTML content
 const replaceNonce = (content, nonce) => {
-  return content.replace(/nonce="a23gbfz9e"/g, `nonce="${nonce}"`).replace(/nonce-a23gbfz9e/g, `nonce-${nonce}`);
+  return content.replace(/data-nonce="a23gbfz9e"/g, `nonce="${nonce}"`).replace(/nonce="a23gbfz9e"/g, `nonce="${nonce}"`).replace(/nonce-a23gbfz9e/g, `nonce-${nonce}`);
 };
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(staticPath, 'pages', 'index.html'));
-});
 
 // Update the route to send the index.html file
 app.get('/', (req, res) => {
-  fs.readFile(path.join(staticPath, 'pages', 'index.html'), 'utf8')
+  fs.readFile(path.join(staticPath, 'index.html'), 'utf8')
     .then(content => {
       // Replace the hardcoded nonce with the dynamically generated one
       const updatedContent = replaceNonce(content, res.locals.nonce);
@@ -146,7 +142,7 @@ app.get('*', (req, res) => {
   // Determine the appropriate path based on whether the request has a file extension
   const pagePath = path.extname(requestedPath) !== ''
     ? path.join(staticPath, requestedPath)
-    : path.join(staticPath, 'pages', `${requestedPath}.html`);
+    : path.join(staticPath, `${requestedPath}.html`);
 
   fs.readFile(pagePath, 'utf8')
     .then(content => {
