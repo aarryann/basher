@@ -93,6 +93,7 @@
   </div>
 
   <!-- Theme Toggle -->
+  <slot name="footer-action" />
   <div class="fixed bottom-5 left-5">
     <button @click="toggleLock" class="bg-gray-800 text-white p-3 rounded-full">
       <i :class="lockClass"></i>
