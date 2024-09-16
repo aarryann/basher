@@ -2,6 +2,7 @@
 
 ---
 
+<!-- Receives this.$data.widget -->
 <button :class="widgetClass" x-data="card" class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition relative text-left" @mousedown="startHold" @touchstart="startHold" @mouseup="endHold" @touchend="endHold" @mouseleave="cancelHold" @touchmove="cancelHold">
   <div class="flex items-center justify-between h-full">
     <div class="flex items-center justify-end w-6"></div>
