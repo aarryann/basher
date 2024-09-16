@@ -1,6 +1,4 @@
 node_modules
-tailwind.css
-tailwind.min.css
-.astro
-*lock.yaml
 public
+*lock.yaml
+.astro
