@@ -3,5 +3,4 @@ tailwind.css
 tailwind.min.css
 .astro
 *lock.yaml
-astro-build
 public
