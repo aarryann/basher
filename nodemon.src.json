@@ -1,0 +1,8 @@
+{
+  "verbose": false,
+  "watch": [
+    "src/**/*",
+    "assets/**/*"
+  ],
+  "ext": "astro,js,ts,html,css"
+}

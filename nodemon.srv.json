@@ -1,0 +1,10 @@
+{
+  "verbose": false,
+  "watch": [
+    "*.js"
+  ],
+  "ext": "ts,js,json,mjs",
+  "execMap": {
+    "ts": "ts-node-esm"
+  }
+}

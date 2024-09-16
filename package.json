@@ -4,7 +4,11 @@
   "description": "A web dashboard for running and displaying the output of bash commands",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "run-p start:src start:pkg start:srv",
+    "start:1": "node server.js",
+    "start:src": "nodemon --config nodemon.src.json --exec 'astro build'",
+    "start:pkg": "sleep 2 && npx tailwindcss -i main.css -o public/styles/tailwind.min.css -m --watch",
+    "start:srv": "sleep 2 && nodemon --config nodemon.srv.json server.js",
     "dev": "nodemon server.js",
     "wsdev": "nodemon wsserver.js",
     "docker:build": "docker compose up -d",
@@ -12,9 +16,7 @@
     "docker:clean": "docker compose stop homation && docker compose rm homation",
     "docker:tag": "docker tag homation:latest aarryann/homation:latest",
     "docker:push": "docker push aarryann/homation:latest",
-    "build": "astro build",
-    "buildw": "astro build --watch"
-
+    "build": "astro build"
   },
   "dependencies": {
     "@alpinejs/csp": "^3.14.1",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.4",
+    "npm-run-all": "^4.1.5",
     "tailwindcss": "^3.4.10"
   },
   "keywords": [
