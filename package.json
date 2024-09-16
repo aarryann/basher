@@ -6,9 +6,9 @@
   "scripts": {
     "start": "run-p start:src start:pkg start:srv",
     "start:1": "node server.js",
-    "start:src": "nodemon --config nodemon.src.json --exec 'astro build'",
+    "start:src": "nodemon --config res/nodemon.src.json --exec 'astro build'",
     "start:pkg": "sleep 2 && npx tailwindcss -i main.css -o public/styles/tailwind.min.css -m --watch",
-    "start:srv": "sleep 2 && nodemon --config nodemon.srv.json server.js",
+    "start:srv": "sleep 2 && nodemon --config res/nodemon.srv.json server.js",
     "dev": "nodemon server.js",
     "wsdev": "nodemon wsserver.js",
     "docker:build": "docker compose up -d",
