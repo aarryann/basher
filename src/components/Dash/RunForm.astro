@@ -4,14 +4,40 @@ const { xdata } = Astro.props;
 
 <div class="grid grid-cols-2 gap-4 p-5 auto-rows-min" x-data={xdata} x-show="runFormId">
   <!-- First Row: Back Button (left-aligned) and Run Button (right-aligned) -->
-  <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start" @click="back">Back Button</button>
-  <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start">Run Button</button>
+  <button class="bg-gray-800 rounded-lg p-2 w-48 hover:bg-gray-600 transition justify-self-start" @click="back">
+    <div class="flex p-1 flex-col items-center text-sm grow">
+      <i class="fas fa-arrow-left mb-1"></i>
+      <span class="whitespace-nowrap">Back Button</span>
+    </div>
+  </button>
+  <button class="bg-gray-800 rounded-lg p-2 w-36 hover:bg-gray-600 transition justify-self-start">
+    <div class="flex p-1 flex-col items-center text-sm grow">
+      <i class="fas fa-circle-play mb-1"></i>
+      <span class="whitespace-nowrap">Run</span>
+    </div>
+  </button>
 
   <!-- Second Row: Empty space (to align Alternate Run Button) and Alternate Run Button (right-aligned) -->
   <div></div>
-  <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start">Alternate Run Button</button>
+  <button class="bg-gray-800 rounded-lg p-2 w-36 hover:bg-gray-600 transition justify-self-start">
+    <div class="flex p-1 flex-col items-center text-sm grow">
+      <i class="far fa-circle-play mb-1"></i>
+      <span class="whitespace-nowrap">Run toggled</span>
+    </div>
+  </button>
 
   <!-- Third Row: Settings Button (left-aligned) and Show Logs Button (right-aligned) -->
-  <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start">Settings Button</button>
-  <button class="bg-gray-800 rounded-lg p-2 hover:bg-gray-600 transition justify-self-start">Show Logs</button>
+  <button class="bg-gray-800 rounded-lg p-2 w-48 hover:bg-gray-600 transition justify-self-start">
+    <div class="flex p-1 flex-col items-center text-sm grow">
+      <i class="fas fa-cog mb-1"></i>
+      <span class="whitespace-nowrap">Settings</span>
+    </div>
+  </button>
+  <button class="bg-gray-800 rounded-lg p-2 w-36 hover:bg-gray-600 transition justify-self-start">
+    <div class="flex p-1 flex-col items-center text-sm grow">
+      <i class="far fa-file mb-1"></i>
+      <span class="whitespace-nowrap">Show Logs</span>
+    </div>
+
+  </button>
 </div>
