@@ -81,13 +81,13 @@ import Card from "../components/Dash/Card.astro";
       </div>
     </div>
 
-    <div class="grid grid-cols-3 sm:grid-cols-12 md:grid-cols-18 lg:grid-cols-24 xl:grid-cols-30 gap-4 p-5 auto-rows-min">
+    <div class="grid grid-cols-3 sm:grid-cols-12 md:grid-cols-18 lg:grid-cols-24 xl:grid-cols-30 gap-4 p-5 auto-rows-min" x-show="isFormSelected">
       <template x-for="(widget, index) in filteredWidgets" :key="index">
-        <Card />
+        <Card xdata="card" />
       </template>
     </div>
 
-    <RunForm />
+    <RunForm xdata="runform" />
 
     <!-- Theme Toggle -->
     <div class="fixed bottom-5 left-5" slot="footer-action">
