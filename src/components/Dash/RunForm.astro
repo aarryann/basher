@@ -2,9 +2,9 @@
 const { xdata } = Astro.props;
 ---
 
-<div class="grid grid-cols-2 gap-4 p-5 auto-rows-min" x-data={xdata} x-show="runFormId">
+<div class="grid grid-cols-2 gap-4 p-5 auto-rows-min" x-data={xdata} @set-runform.window="getRunForm" x-show="runFormId">
   <!-- First Row: Back Button (left-aligned) and Run Button (right-aligned) -->
-  <button class="bg-gray-800 rounded-lg p-2 w-48 hover:bg-gray-600 transition justify-self-start" @click="back">
+  <button class="bg-gray-800 rounded-lg p-2 w-36 hover:bg-gray-600 transition justify-self-start" @click="back">
     <div class="flex p-1 flex-col items-center text-sm grow">
       <i class="fas fa-arrow-left mb-1"></i>
       <span class="whitespace-nowrap">Back Button</span>
@@ -13,21 +13,21 @@ const { xdata } = Astro.props;
   <button class="bg-gray-800 rounded-lg p-2 w-36 hover:bg-gray-600 transition justify-self-start">
     <div class="flex p-1 flex-col items-center text-sm grow">
       <i class="fas fa-circle-play mb-1"></i>
-      <span class="whitespace-nowrap">Run</span>
+      <span class="whitespace-nowrap" x-text="title"></span>
     </div>
   </button>
 
   <!-- Second Row: Empty space (to align Alternate Run Button) and Alternate Run Button (right-aligned) -->
-  <div></div>
-  <button class="bg-gray-800 rounded-lg p-2 w-36 hover:bg-gray-600 transition justify-self-start">
+  <div x-show="title_1"></div>
+  <button class="bg-gray-800 rounded-lg p-2 w-36 hover:bg-gray-600 transition justify-self-start" x-show="title_1">
     <div class="flex p-1 flex-col items-center text-sm grow">
       <i class="far fa-circle-play mb-1"></i>
-      <span class="whitespace-nowrap">Run toggled</span>
+      <span class="whitespace-nowrap" x-text="title_1"></span>
     </div>
   </button>
 
   <!-- Third Row: Settings Button (left-aligned) and Show Logs Button (right-aligned) -->
-  <button class="bg-gray-800 rounded-lg p-2 w-48 hover:bg-gray-600 transition justify-self-start">
+  <button class="bg-gray-800 rounded-lg p-2 w-36 hover:bg-gray-600 transition justify-self-start">
     <div class="flex p-1 flex-col items-center text-sm grow">
       <i class="fas fa-cog mb-1"></i>
       <span class="whitespace-nowrap">Settings</span>
@@ -38,6 +38,5 @@ const { xdata } = Astro.props;
       <i class="far fa-file mb-1"></i>
       <span class="whitespace-nowrap">Show Logs</span>
     </div>
-
   </button>
 </div>

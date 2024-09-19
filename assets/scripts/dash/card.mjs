@@ -149,7 +149,8 @@ export const card = () => ({
   },
 
   handleCardClick() {
-    this.runFormId = this.card.id;
+    //this.runFormId = this.card.id;
+    this.$dispatch('set-runform', `{"runformid":"${this.card.id}", "title": "${this.card.title}", "title_1": "${this.card.title_1 || ''}", "toggleState": "${this.toggleState || 0}" }`);
     this.showLogs();
 
   },
