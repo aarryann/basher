@@ -58,14 +58,14 @@ export const card = () => ({
     }
   },
 
-  async runCommand() {
+  async runCommand(cardId, tstate) {
     try {
-      const endpoint = this.toggleState === 1 ? 'run/1' : 'run';
-      const response = await fetch(`/api/commands/${this.card.id}/${endpoint}`);
+      const endpoint = tstate === 1 ? 'run/1' : 'run';
+      const response = await fetch(`/api/commands/${cardId}/${endpoint}`);
       const data = await response.json();
-      this.$dispatch('show-message', `${this.title} action completed`);
+      this.$dispatch('show-message', data.message);
       setTimeout(() => { this.updateCardState() }, 30000);
-      return data.output;
+      return data;
     } catch (error) {
       console.error('Failed to run command:', error);
       this.$dispatch('show-message', 'Failed to perform action. Please try again.');
@@ -160,7 +160,7 @@ export const card = () => ({
   },
 
   async handleRunCommand() {
-    await this.runCommand();
+    await this.runCommand(this.card.id, this.toggleState);
     this.showMessage(`${this.title} clicked`);
   },
 

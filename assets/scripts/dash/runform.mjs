@@ -22,6 +22,29 @@ export const runform = () => ({
 
   },
 
+  async runCommand(cardId, tstate) {
+    try {
+      const endpoint = tstate === 1 ? 'run/1' : 'run';
+      const response = await fetch(`/api/commands/${cardId}/${endpoint}`);
+      const data = await response.json();
+      this.$dispatch('show-message', data.message);
+      return data;
+    } catch (error) {
+      console.error('Failed to run command:', error);
+      this.$dispatch('show-message', 'Failed to perform action. Please try again.');
+    }
+  },
+
+  async onRunCommand() {
+    const data = await this.runCommand(this.runFormId, this.toggleState);
+    this.showMessage(data.message);
+  },
+
+  async onAltRunCommand() {
+    const data = await this.runCommand(this.runFormId, Math.abs(this.toggleState - 1));
+    this.showMessage(data.message);
+  },
+
   back() {
     this.runFormId = null;
   }

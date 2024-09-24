@@ -96,7 +96,8 @@ app.get('/api/commands/:id/run', async (req, res) => {
     }
 
     const output = await runCommand(record.command);
-    res.json({ output });
+    const message = `${record.title} action completed`;
+    res.json({ output, message });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -112,7 +113,8 @@ app.get('/api/commands/:id/run/1', async (req, res) => {
     }
 
     const output = await runCommand(record.command_1);
-    res.json({ output });
+    const message = `${record.title_1} action completed`;
+    res.json({ output, message });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
